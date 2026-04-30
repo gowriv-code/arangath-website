@@ -1,0 +1,1825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arangath — Infrastructure BIM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #060C12;
+    --off-black: #0B1520;
+    --dark-surface: #101D2A;
+    --border: rgba(74,170,210,0.13);
+    --border-hover: rgba(74,170,210,0.30);
+    --gold: #4AAAD2;
+    --gold-dim: rgba(74,170,210,0.14);
+    --teal: #3DC9A0;
+    --teal-dim: rgba(61,201,160,0.13);
+    --white: #F0F7FF;
+    --muted: rgba(220,238,255,0.72);
+    --very-muted: rgba(200,225,248,0.42);
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --mono: 'DM Mono', 'Courier New', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--serif);
+    font-size: 18px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 28px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(10,10,10,0.95) 0%, transparent 100%);
+    backdrop-filter: blur(4px);
+  }
+
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: 0.22em;
+    color: var(--white);
+    text-transform: uppercase;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-logo-text {
+    letter-spacing: 0.22em;
+  }
+
+  .nav-logo-a {
+    color: var(--gold);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 44px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--white); }
+
+  .nav-cta {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--teal);
+    text-decoration: none;
+    text-transform: uppercase;
+    border: 1px solid rgba(61,201,160,0.35);
+    padding: 10px 22px;
+    transition: all 0.2s;
+  }
+
+  .nav-cta:hover {
+    background: var(--teal-dim);
+    border-color: var(--teal);
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 60px 100px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 70% 40%, rgba(74,159,212,0.05) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(74,159,212,0.04) 0%, transparent 60%);
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%);
+  }
+
+  .hero-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .hero-label::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.5;
+  }
+
+  .hero-title {
+    font-family: var(--serif);
+    font-size: clamp(52px, 7vw, 108px);
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    position: relative;
+    max-width: 900px;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--teal);
+  }
+
+  .hero-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 64px;
+    position: relative;
+  }
+
+  .hero-descriptor {
+    font-family: var(--serif);
+    font-size: 17px;
+    font-weight: 300;
+    color: var(--muted);
+    max-width: 360px;
+    line-height: 1.7;
+  }
+
+  .hero-scroll {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--very-muted);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .hero-scroll::after {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, var(--very-muted), transparent);
+  }
+
+  /* SECTION COMMON */
+  section {
+    padding: 120px 60px;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 56px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .section-label::after {
+    content: '';
+    display: block;
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    max-width: 120px;
+  }
+
+  .section-label.teal {
+    color: var(--teal);
+  }
+
+  /* PROPOSITION */
+  .proposition {
+    background: var(--off-black);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .proposition-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .proposition-left h2 {
+    font-family: var(--serif);
+    font-size: clamp(36px, 4vw, 58px);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+
+  .proposition-left h2 em {
+    font-style: italic;
+    color: var(--teal);
+  }
+
+  .proposition-right {
+    padding-top: 8px;
+  }
+
+  .proposition-right p {
+    font-family: var(--serif);
+    font-size: 17px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 28px;
+  }
+
+  .proposition-right p:last-child { margin-bottom: 0; }
+
+  /* SERVICES */
+  .services { background: var(--black); }
+
+  .services-inner { max-width: 1200px; margin: 0 auto; }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .service-card {
+    background: var(--black);
+    padding: 52px 44px;
+    transition: background 0.3s, border-color 0.3s;
+    cursor: default;
+    border-bottom: 2px solid transparent;
+  }
+
+  .service-card:hover {
+    background: var(--dark-surface);
+    border-bottom-color: var(--teal);
+  }
+
+  .service-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    margin-bottom: 36px;
+    opacity: 0.8;
+  }
+
+  .service-card:nth-child(2) .service-num,
+  .service-card:nth-child(2) .service-title {
+    /* middle card gets teal accent on number */
+  }
+
+  .service-card:nth-child(even) .service-num {
+    color: var(--teal);
+  }
+
+  .service-title {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    letter-spacing: -0.01em;
+  }
+
+  .service-desc {
+    font-family: var(--serif);
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 32px;
+  }
+
+  .service-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    color: var(--very-muted);
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    text-transform: uppercase;
+  }
+
+  /* APPROACH */
+  .approach {
+    background: var(--dark-surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .approach-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .approach-heading {
+    font-family: var(--serif);
+    font-size: clamp(32px, 3.5vw, 52px);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    max-width: 600px;
+    margin-bottom: 72px;
+  }
+
+  .approach-heading em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 48px;
+    border-top: 1px solid var(--border);
+    padding-top: 52px;
+  }
+
+  .pillar-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    margin-bottom: 16px;
+    opacity: 0.6;
+  }
+
+  .pillar-title {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+
+  .pillar-text {
+    font-family: var(--serif);
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  /* SECTORS */
+  .sectors { background: var(--black); }
+  .sectors-inner { max-width: 1200px; margin: 0 auto; }
+
+  .sectors-list {
+    border-top: 1px solid var(--border);
+  }
+
+  .sector-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 32px 0;
+    border-bottom: 1px solid var(--border);
+    cursor: default;
+    transition: all 0.2s;
+    gap: 24px;
+  }
+
+  .sector-row:hover .sector-name { color: var(--teal); }
+  .sector-row:hover .sector-arrow { opacity: 1; transform: translateX(4px); }
+
+  .sector-left {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .sector-idx {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--very-muted);
+    min-width: 24px;
+  }
+
+  .sector-name {
+    font-family: var(--serif);
+    font-size: clamp(22px, 2.5vw, 36px);
+    font-weight: 300;
+    letter-spacing: -0.01em;
+    transition: color 0.2s;
+  }
+
+  .sector-note {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--very-muted);
+    text-transform: uppercase;
+  }
+
+  .sector-arrow {
+    font-size: 20px;
+    color: var(--teal);
+    opacity: 0;
+    transition: all 0.2s;
+  }
+
+  /* MARKETS */
+  .markets {
+    background: var(--off-black);
+    border-top: 1px solid var(--border);
+  }
+
+  .markets-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .markets-left h2 {
+    font-family: var(--serif);
+    font-size: clamp(32px, 3.5vw, 52px);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+
+  .markets-left h2 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .markets-right {
+    padding-top: 8px;
+  }
+
+  .market-item {
+    padding: 28px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+  }
+
+  .market-item:first-child { border-top: 1px solid var(--border); }
+
+  .market-status {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: var(--teal);
+    background: var(--teal-dim);
+    border: 1px solid rgba(61,201,160,0.25);
+    padding: 3px 9px;
+    text-transform: uppercase;
+    margin-top: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .market-status.soon {
+    color: var(--very-muted);
+    background: transparent;
+    border-color: var(--border);
+  }
+
+  .market-text h3 {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 6px;
+  }
+
+  .market-text p {
+    font-family: var(--serif);
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* ABOUT */
+  .about {
+    background: var(--black);
+    border-top: 1px solid var(--border);
+  }
+
+  .about-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .about-main h2 {
+    font-family: var(--serif);
+    font-size: clamp(36px, 4vw, 58px);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin-bottom: 36px;
+  }
+
+  .about-main h2 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .about-main p {
+    font-family: var(--serif);
+    font-size: 17px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.85;
+    margin-bottom: 24px;
+  }
+
+  .about-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding-top: 8px;
+  }
+
+  .stat-item {
+    border-left: 1px solid var(--border);
+    padding-left: 24px;
+  }
+
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 44px;
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--very-muted);
+    text-transform: uppercase;
+  }
+
+
+  /* CONTACT */
+  .contact {
+    background: var(--off-black);
+    border-top: 1px solid var(--border);
+  }
+
+  .contact-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .contact-left h2 {
+    font-family: var(--serif);
+    font-size: clamp(36px, 4vw, 58px);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin-bottom: 28px;
+  }
+
+  .contact-left h2 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .contact-left p {
+    font-family: var(--serif);
+    font-size: 17px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 44px;
+  }
+
+  .contact-details {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .contact-detail {
+    display: flex;
+    gap: 16px;
+    align-items: baseline;
+  }
+
+  .contact-detail-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--very-muted);
+    text-transform: uppercase;
+    min-width: 64px;
+  }
+
+  .contact-detail-val {
+    font-family: var(--serif);
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--white);
+  }
+
+  .contact-detail-val a {
+    color: var(--white);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .contact-detail-val a:hover { color: var(--gold); }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .form-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--very-muted);
+    text-transform: uppercase;
+  }
+
+  .form-input, .form-select, .form-textarea {
+    background: var(--black);
+    border: 1px solid var(--border);
+    color: var(--white);
+    font-family: var(--serif);
+    font-size: 16px;
+    font-weight: 300;
+    padding: 14px 18px;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+    -webkit-appearance: none;
+  }
+
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: rgba(200,169,110,0.5);
+  }
+
+  .form-input::placeholder, .form-textarea::placeholder {
+    color: var(--very-muted);
+  }
+
+  .form-select { cursor: pointer; }
+
+  .form-select option {
+    background: var(--off-black);
+    color: var(--white);
+  }
+
+  .form-textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  .form-submit {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--teal);
+    text-transform: uppercase;
+    background: transparent;
+    border: 1px solid rgba(61,201,160,0.35);
+    padding: 18px 36px;
+    cursor: pointer;
+    transition: all 0.2s;
+    align-self: flex-start;
+  }
+
+  .form-submit:hover {
+    background: var(--teal-dim);
+    border-color: var(--teal);
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--black);
+    border-top: 1px solid var(--border);
+    padding: 48px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .footer-logo {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    color: var(--white);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+  }
+
+  .footer-logo-a { color: var(--gold); }
+
+  .footer-note {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--very-muted);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .footer-links a {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--very-muted);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--white); }
+
+  /* STANDARD MARK */
+  .standards-bar {
+    background: var(--dark-surface);
+    border-top: 1px solid var(--border);
+    padding: 28px 60px;
+    display: flex;
+    align-items: center;
+    gap: 48px;
+    flex-wrap: wrap;
+  }
+
+  .standards-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--very-muted);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .standards-items {
+    display: flex;
+    gap: 36px;
+    flex-wrap: wrap;
+  }
+
+  .std-item {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .std-item::before {
+    content: '';
+    display: block;
+    width: 4px;
+    height: 4px;
+    background: var(--gold);
+    opacity: 0.6;
+  }
+
+  .std-item:nth-child(even)::before {
+    background: var(--teal);
+  }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    nav { padding: 20px 24px; }
+    .nav-links { display: none; }
+    .hero { padding: 0 24px 80px; }
+    section { padding: 80px 24px; }
+    .proposition-inner,
+    .markets-inner,
+    .contact-inner,
+    .about-grid { grid-template-columns: 1fr; gap: 48px; }
+    .services-grid { grid-template-columns: 1fr; }
+    .pillars { grid-template-columns: 1fr 1fr; gap: 32px; }
+    footer { padding: 32px 24px; flex-direction: column; align-items: flex-start; }
+    .standards-bar { padding: 20px 24px; gap: 20px; }
+    .hero-bottom { flex-direction: column; gap: 32px; }
+  }
+
+  @media (max-width: 480px) {
+    .pillars { grid-template-columns: 1fr; }
+  }
+
+  /* PROJECTS */
+  .projects {
+    background: var(--black);
+    border-top: 1px solid var(--border);
+  }
+
+  .projects-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .projects-intro {
+    margin-bottom: 56px;
+    max-width: 640px;
+  }
+
+  .projects-intro p {
+    font-family: var(--serif);
+    font-size: 17px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  .projects-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 80px;
+  }
+
+  .project-card {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 56px;
+    align-items: center;
+  }
+
+  .project-card--reverse {
+    grid-template-columns: 1fr 1.2fr;
+  }
+
+  .project-card--reverse .project-bim {
+    order: 2;
+  }
+
+  .project-card--reverse .project-info {
+    order: 1;
+  }
+
+  .project-bim {
+    border: 1px solid var(--border);
+    line-height: 0;
+  }
+
+  .project-bim:hover {
+    border-color: var(--border-hover);
+  }
+
+  .project-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--gold);
+    margin-bottom: 12px;
+    opacity: 0.6;
+  }
+
+  .project-meta {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+
+  .project-type {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--teal);
+    text-transform: uppercase;
+    opacity: 0.8;
+  }
+
+  .project-loc {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--very-muted);
+    text-transform: uppercase;
+  }
+
+  .project-title {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 16px;
+  }
+
+  .project-desc {
+    font-family: var(--serif);
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 24px;
+  }
+
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .ptag {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--very-muted);
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    text-transform: uppercase;
+  }
+
+  .projects-disclaimer {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--very-muted);
+    line-height: 1.7;
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+
+  @media (max-width: 768px) {
+    .project-card,
+    .project-card--reverse { grid-template-columns: 1fr; gap: 32px; }
+    .project-card--reverse .project-bim { order: 0; }
+    .project-card--reverse .project-info { order: 0; }
+  }
+
+
+  /* AMP8 TOOLTIP */
+  .tooltip-wrap {
+    position: relative;
+    display: inline;
+    cursor: help;
+    border-bottom: 1px dotted rgba(74,170,210,0.5);
+  }
+
+  .tooltip-wrap .tooltip-box {
+    display: none;
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #0F1720;
+    border: 1px solid rgba(74,170,210,0.25);
+    color: rgba(237,244,250,0.85);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-style: normal;
+    letter-spacing: 0.06em;
+    line-height: 1.6;
+    padding: 10px 14px;
+    white-space: nowrap;
+    z-index: 100;
+    pointer-events: none;
+  }
+
+  .tooltip-wrap .tooltip-box::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: rgba(74,170,210,0.25);
+  }
+
+  .tooltip-wrap:hover .tooltip-box {
+    display: block;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <svg width="22" height="26" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:middle;margin-right:4px;flex-shrink:0;">
+      <!-- ISO grid plane at base -->
+      <line x1="10" y1="148" x2="80" y2="113" stroke="#4AAAD2" stroke-width="1.8" opacity="0.7"/>
+      <line x1="30" y1="155" x2="100" y2="120" stroke="#4AAAD2" stroke-width="1.4" opacity="0.5"/>
+      <line x1="50" y1="158" x2="120" y2="123" stroke="#4AAAD2" stroke-width="1.2" opacity="0.35"/>
+      <line x1="150" y1="148" x2="80" y2="113" stroke="#4AAAD2" stroke-width="1.8" opacity="0.7"/>
+      <line x1="130" y1="155" x2="60" y2="120" stroke="#4AAAD2" stroke-width="1.4" opacity="0.5"/>
+      <line x1="110" y1="158" x2="40" y2="123" stroke="#4AAAD2" stroke-width="1.2" opacity="0.35"/>
+      <!-- Base anchor line -->
+      <line x1="10" y1="148" x2="150" y2="148" stroke="#4AAAD2" stroke-width="2.5" stroke-linecap="round" opacity="0.75"/>
+      <!-- A left leg -->
+      <line x1="20" y1="148" x2="80" y2="12" stroke="#4AAAD2" stroke-width="5" stroke-linecap="round"/>
+      <!-- A right leg -->
+      <line x1="140" y1="148" x2="80" y2="12" stroke="#4AAAD2" stroke-width="5" stroke-linecap="round"/>
+      <!-- Interior grid lines on left leg -->
+      <line x1="35" y1="136" x2="72" y2="42" stroke="#4AAAD2" stroke-width="1.6" opacity="0.6"/>
+      <line x1="50" y1="142" x2="76" y2="68" stroke="#4AAAD2" stroke-width="1.2" opacity="0.42"/>
+      <!-- Interior grid lines on right leg -->
+      <line x1="125" y1="136" x2="88" y2="42" stroke="#4AAAD2" stroke-width="1.6" opacity="0.6"/>
+      <line x1="110" y1="142" x2="84" y2="68" stroke="#4AAAD2" stroke-width="1.2" opacity="0.42"/>
+      <!-- Horizontal cross lines on left leg -->
+      <line x1="27" y1="112" x2="56" y2="112" stroke="#4AAAD2" stroke-width="1.4" opacity="0.55"/>
+      <line x1="34" y1="88" x2="66" y2="88" stroke="#4AAAD2" stroke-width="1.2" opacity="0.45"/>
+      <line x1="42" y1="64" x2="70" y2="64" stroke="#4AAAD2" stroke-width="1" opacity="0.35"/>
+      <!-- Horizontal cross lines on right leg -->
+      <line x1="133" y1="112" x2="104" y2="112" stroke="#4AAAD2" stroke-width="1.4" opacity="0.55"/>
+      <line x1="126" y1="88" x2="94" y2="88" stroke="#4AAAD2" stroke-width="1.2" opacity="0.45"/>
+      <line x1="118" y1="64" x2="90" y2="64" stroke="#4AAAD2" stroke-width="1" opacity="0.35"/>
+      <!-- Teal crossbar -->
+      <line x1="44" y1="96" x2="116" y2="96" stroke="#3DC9A0" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="44" cy="96" r="7" fill="#3DC9A0"/>
+      <circle cx="116" cy="96" r="7" fill="#3DC9A0"/>
+      <circle cx="80" cy="12" r="6" fill="#4AAAD2"/>
+    </svg><span class="nav-logo-text">RANG<span class="nav-logo-a">A</span>TH</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#sectors">Sectors</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#markets">Markets</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Get in touch</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+
+  <div class="hero-label">Infrastructure BIM Consultancy</div>
+
+  <h1 class="hero-title">
+    Where water<br>
+    infrastructure<br>
+    <em>meets precision.</em>
+  </h1>
+
+  <div class="hero-bottom">
+    <p class="hero-descriptor">
+      Specialist BIM consultancy for water, wastewater and civil infrastructure. ISO 19650-compliant. Delivered from the ground up by engineers who have built these assets — not just modelled them.
+    </p>
+    <div class="hero-scroll">Scroll</div>
+  </div>
+</section>
+
+<!-- PROPOSITION -->
+<section class="proposition" id="proposition">
+  <div class="proposition-inner">
+    <div class="proposition-left">
+      <div class="section-label">Our proposition</div>
+      <h2>The information<br>gap that costs<br><em><span class="tooltip-wrap">AMP8<span class="tooltip-box">AMP8 — UK water sector investment cycle, 2025–2030 · £104bn committed</span></span> its potential.</em></h2>
+    </div>
+    <div class="proposition-right">
+      <p>
+        UK infrastructure clients face a persistent shortage of senior BIM expertise. Projects slip. Coordination fails. Rework costs mount. With £104bn committed to water and wastewater infrastructure through <span class="tooltip-wrap">AMP8<span class="tooltip-box">AMP8 — UK water sector investment cycle, 2025–2030 · £104bn committed</span></span> — more than double the previous investment cycle — the demand for compliant, high-quality BIM delivery has never been greater.
+      </p>
+      <p>
+        Arangath was founded to serve that market directly. We bring together commercial rigour and 25 years of civil and environmental engineering expertise — delivering ISO 19650-compliant BIM services to UK water contractors and developers at the pace and quality their <span class="tooltip-wrap">AMP8<span class="tooltip-box">AMP8 — UK water sector investment cycle, 2025–2030 · £104bn committed</span></span> projects demand.
+      </p>
+      <p>
+        Our delivery model is built for the <span class="tooltip-wrap">AMP8<span class="tooltip-box">AMP8 — UK water sector investment cycle, 2025–2030 · £104bn committed</span></span> era. Efficient, technically authoritative, and structured to perform on the water, wastewater and civil infrastructure projects that matter most.
+      </p>
+      <p>
+        We are UK-registered and London-based for client engagement, with delivery operations in Mumbai and Kochi. That structure gives Western clients the commercial assurance of a UK firm and the cost efficiency of an experienced India-based engineering team — without compromise on quality or compliance.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="services-inner">
+    <div class="section-label teal">Services</div>
+    <div class="services-grid">
+
+      <div class="service-card">
+        <div class="service-num">01</div>
+        <h3 class="service-title">BIM Coordination, Clash Detection &amp; 4D Programming</h3>
+        <p class="service-desc">
+          Multi-discipline federated model coordination across civil, structural, mechanical, electrical and process disciplines. Navisworks clash detection with full reporting and resolution workflows. 4D construction sequencing using Synchro — linking programme to model so contractors can rehearse and de-risk methodology before a single spade breaks ground. Standard practice on <span class="tooltip-wrap">AMP8<span class="tooltip-box">AMP8 — UK water sector investment cycle, 2025–2030 · £104bn committed</span></span> water and wastewater contracts.
+        </p>
+        <div class="service-tags">
+          <span class="tag">Navisworks</span>
+          <span class="tag">Revit</span>
+          <span class="tag">Civil 3D</span>
+          <span class="tag">Synchro 4D</span>
+          <span class="tag">ISO 19650</span>
+          <span class="tag">LOD 300–400</span>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-num">02</div>
+        <h3 class="service-title">Information Management &amp; BEP Production</h3>
+        <p class="service-desc">
+          Project-specific BIM Execution Plans responding directly to Employer's Information Requirements. Common Data Environment setup and administration on ACC, BIM360, or ProjectWise. Asset Information Requirement planning and AIM handover — structured for utility clients including Thames Water, Anglian, Severn Trent and United Utilities. Information delivery milestones mapped to data drops. Built to pass client review from day one.
+        </p>
+        <div class="service-tags">
+          <span class="tag">BEP</span>
+          <span class="tag">EIR Response</span>
+          <span class="tag">AIM Handover</span>
+          <span class="tag">ACC / BIM360</span>
+          <span class="tag">ProjectWise</span>
+          <span class="tag">CIC Protocol</span>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-num">03</div>
+        <h3 class="service-title">Digital Delivery Consultancy</h3>
+        <p class="service-desc">
+          For Tier 2 contractors entering <span class="tooltip-wrap">AMP8<span class="tooltip-box">AMP8 — UK water sector investment cycle, 2025–2030 · £104bn committed</span></span> frameworks who need to meet utility client digital delivery requirements but lack in-house BIM capability. We set up your digital delivery workflows, respond to EIRs on your behalf, establish CDE environments, and onboard your project teams. Practical, commercial, and structured around what your client actually requires — not theoretical BIM maturity models.
+        </p>
+        <div class="service-tags">
+          <span class="tag">EIR Response</span>
+          <span class="tag">Workflow Setup</span>
+          <span class="tag">Team Onboarding</span>
+          <span class="tag">AMP8</span>
+          <span class="tag">Framework Compliance</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- APPROACH -->
+<section class="approach">
+  <div class="approach-inner">
+    <div class="section-label">Our approach</div>
+    <h2 class="approach-heading">
+      Commercial discipline applied to<br><em>engineering delivery.</em>
+    </h2>
+    <div class="pillars">
+      <div>
+        <div class="pillar-num">I</div>
+        <h4 class="pillar-title">Built on engineering</h4>
+        <p class="pillar-text">Our technical advisory comes from 25 years of contracting on water and wastewater infrastructure — not from a BIM software background. We understand what the model needs to do on site, not just on screen.</p>
+      </div>
+      <div>
+        <div class="pillar-num" style="color:var(--teal)">II</div>
+        <h4 class="pillar-title">Standards compliance</h4>
+        <p class="pillar-text">ISO 19650 Parts 1 and 2, UK BIM Framework, and utility client EIRs — including Thames Water, Anglian, Severn Trent and United Utilities — are rigorously interpreted and implemented.</p>
+      </div>
+      <div>
+        <div class="pillar-num">III</div>
+        <h4 class="pillar-title">Commercial clarity</h4>
+        <p class="pillar-text">Scope defined precisely. Deliverables costed transparently. No scope creep, no ambiguity. Structured engagements from first brief to AIM handover.</p>
+      </div>
+      <div>
+        <div class="pillar-num" style="color:var(--teal)">IV</div>
+        <h4 class="pillar-title">Efficient delivery</h4>
+        <p class="pillar-text">Senior-grade output at a cost point UK-only firms cannot match. Our delivery model closes the <span class="tooltip-wrap">AMP8<span class="tooltip-box">AMP8 — UK water sector investment cycle, 2025–2030 · £104bn committed</span></span> skills gap without compromise on quality, compliance or turnaround.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTORS -->
+<section class="sectors" id="sectors">
+  <div class="sectors-inner">
+    <div class="section-label">Sectors</div>
+    <div class="sectors-list">
+      <div class="sector-row">
+        <div class="sector-left">
+          <span class="sector-idx">01</span>
+          <span class="sector-name">Water &amp; Wastewater Treatment</span>
+        </div>
+        <span class="sector-note">Treatment Works · Pumping Stations · Reservoirs</span>
+        <span class="sector-arrow">→</span>
+      </div>
+      <div class="sector-row">
+        <div class="sector-left">
+          <span class="sector-idx">02</span>
+          <span class="sector-name">Water Networks &amp; Distribution</span>
+        </div>
+        <span class="sector-note">Pipelines · Storage · Utilities · <span class="tooltip-wrap">AMP8<span class="tooltip-box">AMP8 — UK water sector investment cycle, 2025–2030 · £104bn committed</span></span> Frameworks</span>
+        <span class="sector-arrow">→</span>
+      </div>
+      <div class="sector-row">
+        <div class="sector-left">
+          <span class="sector-idx">03</span>
+          <span class="sector-name">Civil Infrastructure</span>
+        </div>
+        <span class="sector-note">Highways · Earthworks · Flood Defence · Drainage</span>
+        <span class="sector-arrow">→</span>
+      </div>
+      <div class="sector-row">
+        <div class="sector-left">
+          <span class="sector-idx">04</span>
+          <span class="sector-name">Environmental &amp; Public Sector</span>
+        </div>
+        <span class="sector-note">Remediation · Local Authority · National Infrastructure</span>
+        <span class="sector-arrow">→</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARKETS -->
+<section class="markets" id="markets">
+  <div class="markets-inner">
+    <div class="markets-left">
+      <div class="section-label teal">Markets</div>
+      <h2>Where we<br><em>operate.</em></h2>
+    </div>
+    <div class="markets-right">
+      <div class="market-item">
+        <span class="market-status">Active</span>
+        <div class="market-text">
+          <h3>United Kingdom</h3>
+          <p>Primary market. Serving contractors and developers delivering water, wastewater and civil infrastructure. <span class="tooltip-wrap">AMP8<span class="tooltip-box">AMP8 — UK water sector investment cycle, 2025–2030 · £104bn committed</span></span> pipeline and public sector frameworks.</p>
+        </div>
+      </div>
+      <div class="market-item">
+        <span class="market-status soon">2026</span>
+        <div class="market-text">
+          <h3>Australia</h3>
+          <p>Secondary market. Strong infrastructure pipeline and established appetite for high-quality offshore BIM delivery. Expanding in 2026.</p>
+        </div>
+      </div>
+      <div class="market-item">
+        <span class="market-status soon">2027</span>
+        <div class="market-text">
+          <h3>United States</h3>
+          <p>Longer horizon. Infrastructure investment bill driving BIM adoption. Strategic entry planned for 2027 via partnership or local representation.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-inner">
+    <div class="section-label">About</div>
+    <div class="about-grid">
+      <div class="about-main">
+        <h2>Built on<br><em>experience.</em></h2>
+        <p>
+          Arangath was founded at the intersection of two disciplines that rarely meet: management consulting rigour and deep infrastructure engineering expertise.
+        </p>
+        <p>
+          We understand how infrastructure clients think commercially, how contracts are structured, and what BIM compliance actually requires on a live project. That combination — uncommon in the BIM market — is our foundation.
+        </p>
+        <p>
+          Our delivery operation is based in India, giving us access to exceptional engineering talent and a cost structure that allows us to price competitively without compromise on quality. Our client-facing operations are anchored in London.
+        </p>
+      </div>
+      <div class="about-stats">
+        <div class="stat-item">
+          <div class="stat-num">25+</div>
+          <div class="stat-label">Years infrastructure experience</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num" style="color:var(--teal)">ISO</div>
+          <div class="stat-label">19650 compliant delivery</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num" style="color:var(--teal)">UK</div>
+          <div class="stat-label">Registered entity · London</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- PROJECTS -->
+<section class="projects" id="projects">
+  <div class="projects-inner">
+    <div class="section-label">Technical Advisory — Project Experience</div>
+
+    <div class="projects-intro">
+      <p>Our technical foundation is built on 25 years of delivered infrastructure across water, civil and environmental engineering. The following projects represent the depth of engineering experience that informs every Arangath engagement. Illustrative BIM coordination models shown.</p>
+    </div>
+
+    <div class="projects-grid">
+
+      <!-- PROJECT 01 — Chamravattom Bridge -->
+      <div class="project-card">
+        <div class="project-bim">
+          <svg viewBox="0 0 560 280" width="100%" xmlns="http://www.w3.org/2000/svg">
+            <rect width="560" height="280" fill="#070F18"/>
+            <!-- Grid overlay — BIM viewport feel -->
+            <line x1="0" y1="140" x2="560" y2="140" stroke="rgba(74,170,210,0.06)" stroke-width="0.5"/>
+            <line x1="280" y1="0" x2="280" y2="280" stroke="rgba(74,170,210,0.06)" stroke-width="0.5"/>
+            <!-- River bed -->
+            <rect x="0" y="220" width="560" height="60" fill="#081420"/>
+            <line x1="0" y1="220" x2="560" y2="220" stroke="rgba(61,201,160,0.2)" stroke-width="0.8"/>
+            <!-- Water surface ripple lines -->
+            <line x1="20" y1="232" x2="120" y2="232" stroke="rgba(74,170,210,0.15)" stroke-width="0.5"/>
+            <line x1="160" y1="238" x2="280" y2="238" stroke="rgba(74,170,210,0.12)" stroke-width="0.5"/>
+            <line x1="320" y1="234" x2="440" y2="234" stroke="rgba(74,170,210,0.15)" stroke-width="0.5"/>
+            <line x1="80" y1="248" x2="200" y2="248" stroke="rgba(74,170,210,0.1)" stroke-width="0.5"/>
+            <line x1="360" y1="252" x2="500" y2="252" stroke="rgba(74,170,210,0.1)" stroke-width="0.5"/>
+
+            <!-- Bridge deck — main span, perspective slightly off centre -->
+            <rect x="0" y="174" width="560" height="12" fill="#0F2235" stroke="#4AAAD2" stroke-width="0.8"/>
+            <!-- Road surface markings -->
+            <line x1="0" y1="180" x2="560" y2="180" stroke="rgba(255,255,255,0.06)" stroke-width="4"/>
+            <line x1="100" y1="174" x2="100" y2="186" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+            <line x1="200" y1="174" x2="200" y2="186" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+            <line x1="300" y1="174" x2="300" y2="186" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+            <line x1="400" y1="174" x2="400" y2="186" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+            <line x1="500" y1="174" x2="500" y2="186" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+
+            <!-- Pier columns — 7 visible piers -->
+            <g fill="#0D2030" stroke="#4AAAD2" stroke-width="0.8">
+              <rect x="40" y="186" width="18" height="34"/>
+              <rect x="120" y="186" width="18" height="34"/>
+              <rect x="200" y="186" width="18" height="34"/>
+              <rect x="280" y="186" width="18" height="34"/>
+              <rect x="360" y="186" width="18" height="34"/>
+              <rect x="440" y="186" width="18" height="34"/>
+              <rect x="510" y="186" width="18" height="34"/>
+            </g>
+
+            <!-- Regulator sluice gates — teal highlight on selected span -->
+            <rect x="200" y="188" width="18" height="28" fill="#0D2030" stroke="#3DC9A0" stroke-width="1.2"/>
+            <rect x="280" y="188" width="18" height="28" fill="#0D2030" stroke="#3DC9A0" stroke-width="1.2"/>
+            <!-- Gate mechanism lines -->
+            <line x1="204" y1="192" x2="214" y2="212" stroke="#3DC9A0" stroke-width="0.8" opacity="0.6"/>
+            <line x1="284" y1="192" x2="294" y2="212" stroke="#3DC9A0" stroke-width="0.8" opacity="0.6"/>
+
+            <!-- Pier footings underwater -->
+            <g fill="#081825" stroke="rgba(74,170,210,0.3)" stroke-width="0.5">
+              <rect x="36" y="220" width="26" height="20"/>
+              <rect x="116" y="220" width="26" height="20"/>
+              <rect x="196" y="220" width="26" height="20"/>
+              <rect x="276" y="220" width="26" height="20"/>
+              <rect x="356" y="220" width="26" height="20"/>
+              <rect x="436" y="220" width="26" height="20"/>
+              <rect x="506" y="220" width="26" height="20"/>
+            </g>
+
+            <!-- Clash detection indicator -->
+            <rect x="196" y="182" width="26" height="8" fill="none" stroke="#3DC9A0" stroke-width="1" stroke-dasharray="2,2"/>
+            <circle cx="209" cy="172" r="5" fill="rgba(61,201,160,0.15)" stroke="#3DC9A0" stroke-width="1"/>
+            <text x="218" y="175" font-family="'DM Mono', monospace" font-size="7" fill="#3DC9A0" letter-spacing="0.05em">COORD. PT</text>
+
+            <!-- BIM layer indicators — top right -->
+            <g transform="translate(420, 14)">
+              <rect x="0" y="0" width="8" height="5" fill="#4AAAD2" opacity="0.7"/>
+              <text x="12" y="5" font-family="'DM Mono', monospace" font-size="7" fill="rgba(74,170,210,0.7)">CIVIL</text>
+              <rect x="0" y="10" width="8" height="5" fill="#3DC9A0" opacity="0.7"/>
+              <text x="12" y="15" font-family="'DM Mono', monospace" font-size="7" fill="rgba(61,201,160,0.7)">STRUCTURAL</text>
+              <rect x="0" y="20" width="8" height="5" fill="rgba(255,180,50,0.6)"/>
+              <text x="12" y="25" font-family="'DM Mono', monospace" font-size="7" fill="rgba(255,180,50,0.6)">HYDRAULIC</text>
+            </g>
+
+            <!-- Dimension annotation -->
+            <line x1="40" y1="155" x2="520" y2="155" stroke="rgba(74,170,210,0.3)" stroke-width="0.5"/>
+            <line x1="40" y1="150" x2="40" y2="160" stroke="rgba(74,170,210,0.4)" stroke-width="0.8"/>
+            <line x1="520" y1="150" x2="520" y2="160" stroke="rgba(74,170,210,0.4)" stroke-width="0.8"/>
+            <text x="280" y="152" font-family="'DM Mono', monospace" font-size="7" fill="rgba(74,170,210,0.5)" text-anchor="middle">978m — 70 SPANS</text>
+
+            <!-- Viewport label -->
+            <text x="14" y="16" font-family="'DM Mono', monospace" font-size="8" fill="rgba(74,170,210,0.4)" letter-spacing="0.1em">ELEVATION — STRUCTURAL</text>
+            <text x="14" y="26" font-family="'DM Mono', monospace" font-size="7" fill="rgba(200,225,248,0.2)" letter-spacing="0.08em">LOD 350 · ISO 19650</text>
+          </svg>
+        </div>
+        <div class="project-info">
+          <div class="project-num">01</div>
+          <div class="project-meta">
+            <span class="project-type">Civil · Hydraulic Infrastructure</span>
+            <span class="project-loc">Malappuram, Kerala</span>
+          </div>
+          <h3 class="project-title">Chamravattom Bridge — Kerala</h3>
+          <p class="project-desc">One of Kerala's longest bridges at nearly a kilometre in length, built across the Bharathapuzha river in southern India. The structure carries road traffic while also controlling the flow of water through the river via 70 built-in sluice gates — a dual-purpose design that cuts the driving distance between two of Kerala's major cities by 38km and brings irrigation water to thousands of hectares of farmland. A complex civil and hydraulic engineering contract requiring precise coordination between road, bridge, and water management systems.</p>
+          <div class="project-tags">
+            <span class="ptag">978m Length</span>
+            <span class="ptag">Road + Irrigation</span>
+            <span class="ptag">Civil · Hydraulic</span>
+            <span class="ptag">Kerala Government</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROJECT 02 — JJM Kollam -->
+      <div class="project-card project-card--reverse">
+        <div class="project-bim">
+          <svg viewBox="0 0 560 280" width="100%" xmlns="http://www.w3.org/2000/svg">
+            <rect width="560" height="280" fill="#070F18"/>
+            <!-- Grid -->
+            <line x1="0" y1="140" x2="560" y2="140" stroke="rgba(74,170,210,0.05)" stroke-width="0.5"/>
+            <line x1="280" y1="0" x2="280" y2="280" stroke="rgba(74,170,210,0.05)" stroke-width="0.5"/>
+
+            <!-- Ground plane -->
+            <rect x="0" y="240" width="560" height="40" fill="#06111C"/>
+            <line x1="0" y1="240" x2="560" y2="240" stroke="rgba(61,201,160,0.15)" stroke-width="0.5"/>
+
+            <!-- Main water supply pipeline — horizontal run -->
+            <rect x="0" y="190" width="560" height="14" fill="#0D2235" stroke="#4AAAD2" stroke-width="1"/>
+            <!-- Pipe flow direction arrows -->
+            <polygon points="120,195 130,197 120,199" fill="rgba(74,170,210,0.4)"/>
+            <polygon points="240,195 250,197 240,199" fill="rgba(74,170,210,0.4)"/>
+            <polygon points="360,195 370,197 360,199" fill="rgba(74,170,210,0.4)"/>
+
+            <!-- Distribution branches — vertical drops -->
+            <g stroke="#3DC9A0" stroke-width="1" fill="none">
+              <line x1="80" y1="190" x2="80" y2="240"/>
+              <line x1="160" y1="190" x2="160" y2="240"/>
+              <line x1="240" y1="190" x2="240" y2="240"/>
+              <line x1="320" y1="190" x2="320" y2="240"/>
+              <line x1="400" y1="190" x2="400" y2="240"/>
+              <line x1="480" y1="190" x2="480" y2="240"/>
+            </g>
+
+            <!-- Household connection nodes -->
+            <g fill="#0D2235" stroke="#3DC9A0" stroke-width="1">
+              <circle cx="80" cy="244" r="5"/>
+              <circle cx="160" cy="244" r="5"/>
+              <circle cx="240" cy="244" r="5"/>
+              <circle cx="320" cy="244" r="5"/>
+              <circle cx="400" cy="244" r="5"/>
+              <circle cx="480" cy="244" r="5"/>
+            </g>
+
+            <!-- Pumping station -->
+            <rect x="30" y="148" width="60" height="40" fill="#0D2235" stroke="#4AAAD2" stroke-width="1"/>
+            <rect x="38" y="155" width="16" height="16" fill="#091825" stroke="#4AAAD2" stroke-width="0.8" rx="8"/>
+            <text x="60" y="163" font-family="'DM Mono', monospace" font-size="7" fill="rgba(74,170,210,0.7)">PUMP</text>
+            <text x="60" y="172" font-family="'DM Mono', monospace" font-size="7" fill="rgba(74,170,210,0.5)">STN</text>
+            <line x1="60" y1="188" x2="60" y2="204" stroke="#4AAAD2" stroke-width="1.2"/>
+
+            <!-- Overhead tank -->
+            <line x1="200" y1="60" x2="200" y2="148" stroke="#4AAAD2" stroke-width="1.2"/>
+            <ellipse cx="200" cy="50" rx="28" ry="16" fill="#0D2235" stroke="#4AAAD2" stroke-width="1"/>
+            <ellipse cx="200" cy="42" rx="28" ry="8" fill="#112840" stroke="#4AAAD2" stroke-width="0.8"/>
+            <text x="200" y="47" font-family="'DM Mono', monospace" font-size="7" fill="rgba(74,170,210,0.7)" text-anchor="middle">OHT</text>
+            <line x1="200" y1="148" x2="200" y2="190" stroke="#4AAAD2" stroke-width="1.2"/>
+
+            <!-- Tube well -->
+            <rect x="340" y="100" width="14" height="90" fill="#091825" stroke="#3DC9A0" stroke-width="0.8"/>
+            <rect x="336" y="95" width="22" height="14" fill="#0D2235" stroke="#3DC9A0" stroke-width="0.8"/>
+            <text x="365" y="146" font-family="'DM Mono', monospace" font-size="7" fill="rgba(61,201,160,0.6)">TUBE WELL</text>
+
+            <!-- JJM FHTC count annotation -->
+            <rect x="400" y="60" width="140" height="50" fill="rgba(7,15,24,0.8)" stroke="rgba(74,170,210,0.2)" stroke-width="0.5"/>
+            <text x="412" y="76" font-family="'DM Mono', monospace" font-size="7" fill="rgba(74,170,210,0.6)" letter-spacing="0.08em">FHTC CONNECTIONS</text>
+            <text x="412" y="90" font-family="'DM Mono', monospace" font-size="14" fill="#4AAAD2">2,847</text>
+            <text x="412" y="103" font-family="'DM Mono', monospace" font-size="7" fill="rgba(200,225,248,0.3)">Kollam District · Phase I</text>
+
+            <!-- Layer legend -->
+            <g transform="translate(14, 14)">
+              <rect x="0" y="0" width="8" height="5" fill="#4AAAD2" opacity="0.7"/>
+              <text x="12" y="5" font-family="'DM Mono', monospace" font-size="7" fill="rgba(74,170,210,0.7)">WATER MAIN</text>
+              <rect x="0" y="10" width="8" height="5" fill="#3DC9A0" opacity="0.7"/>
+              <text x="12" y="15" font-family="'DM Mono', monospace" font-size="7" fill="rgba(61,201,160,0.7)">DISTRIBUTION</text>
+              <rect x="0" y="20" width="8" height="5" fill="rgba(255,180,50,0.6)"/>
+              <text x="12" y="25" font-family="'DM Mono', monospace" font-size="7" fill="rgba(255,180,50,0.6)">FHTC NODES</text>
+            </g>
+
+            <text x="14" y="268" font-family="'DM Mono', monospace" font-size="8" fill="rgba(74,170,210,0.4)" letter-spacing="0.1em">SCHEMATIC — PIPE NETWORK</text>
+            <text x="14" y="278" font-family="'DM Mono', monospace" font-size="7" fill="rgba(200,225,248,0.2)" letter-spacing="0.08em">LOD 300 · JJM FRAMEWORK</text>
+          </svg>
+        </div>
+        <div class="project-info">
+          <div class="project-num">02</div>
+          <div class="project-meta">
+            <span class="project-type">Water Supply · Rural Infrastructure</span>
+            <span class="project-loc">Kollam, Kerala</span>
+          </div>
+          <h3 class="project-title">Rural Water Supply — Kollam, Kerala</h3>
+          <p class="project-desc">Drinking water infrastructure delivered under India's national Jal Jeevan Mission — a government programme bringing piped clean water to every rural household across the country. Works in Kollam district included laying underground water mains, building pumping stations and elevated storage tanks, drilling tube wells, and connecting thousands of individual homes to a clean water supply for the first time. A community-scale civil engineering contract with direct impact on public health.</p>
+          <div class="project-tags">
+            <span class="ptag">Rural Water Supply</span>
+            <span class="ptag">Pipeline Networks</span>
+            <span class="ptag">Pumping Stations</span>
+            <span class="ptag">Government of India</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROJECT 03 — 200 MLD Treatment Plant -->
+      <div class="project-card">
+        <div class="project-bim">
+          <svg viewBox="0 0 560 280" width="100%" xmlns="http://www.w3.org/2000/svg">
+            <rect width="560" height="280" fill="#070F18"/>
+            <!-- Grid -->
+            <line x1="0" y1="140" x2="560" y2="140" stroke="rgba(74,170,210,0.05)" stroke-width="0.5"/>
+            <line x1="280" y1="0" x2="280" y2="280" stroke="rgba(74,170,210,0.05)" stroke-width="0.5"/>
+
+            <!-- Ground plane -->
+            <rect x="0" y="245" width="560" height="35" fill="#06111C"/>
+            <line x1="0" y1="245" x2="560" y2="245" stroke="rgba(61,201,160,0.12)" stroke-width="0.5"/>
+
+            <!-- Inlet works / screening -->
+            <rect x="20" y="160" width="55" height="80" fill="#0C1E30" stroke="#4AAAD2" stroke-width="0.8"/>
+            <text x="47" y="195" font-family="'DM Mono', monospace" font-size="7" fill="rgba(74,170,210,0.65)" text-anchor="middle">INLET</text>
+            <text x="47" y="205" font-family="'DM Mono', monospace" font-size="7" fill="rgba(74,170,210,0.65)" text-anchor="middle">WORKS</text>
+            <!-- Screen lines -->
+            <line x1="28" y1="168" x2="28" y2="235" stroke="rgba(74,170,210,0.3)" stroke-width="0.6"/>
+            <line x1="36" y1="168" x2="36" y2="235" stroke="rgba(74,170,210,0.3)" stroke-width="0.6"/>
+            <line x1="44" y1="168" x2="44" y2="235" stroke="rgba(74,170,210,0.3)" stroke-width="0.6"/>
+            <line x1="52" y1="168" x2="52" y2="235" stroke="rgba(74,170,210,0.3)" stroke-width="0.6"/>
+            <line x1="60" y1="168" x2="60" y2="235" stroke="rgba(74,170,210,0.3)" stroke-width="0.6"/>
+            <line x1="68" y1="168" x2="68" y2="235" stroke="rgba(74,170,210,0.3)" stroke-width="0.6"/>
+
+            <!-- Flow pipe between units -->
+            <rect x="75" y="193" width="30" height="10" fill="#0D2235" stroke="#4AAAD2" stroke-width="0.8"/>
+            <polygon points="90,196 100,198 90,200" fill="rgba(74,170,210,0.5)"/>
+
+            <!-- Sedimentation / Clarifier tanks — circular plan shown as ellipses -->
+            <ellipse cx="150" cy="195" rx="40" ry="25" fill="#0C1E30" stroke="#4AAAD2" stroke-width="0.8"/>
+            <ellipse cx="150" cy="195" rx="28" ry="17" fill="#091828" stroke="rgba(74,170,210,0.3)" stroke-width="0.5"/>
+            <line x1="150" y1="170" x2="150" y2="220" stroke="rgba(74,170,210,0.2)" stroke-width="0.5"/>
+            <line x1="110" y1="195" x2="190" y2="195" stroke="rgba(74,170,210,0.2)" stroke-width="0.5"/>
+            <text x="150" y="198" font-family="'DM Mono', monospace" font-size="6.5" fill="rgba(74,170,210,0.6)" text-anchor="middle">CLARIFIER</text>
+
+            <!-- Second clarifier -->
+            <ellipse cx="250" cy="195" rx="40" ry="25" fill="#0C1E30" stroke="#4AAAD2" stroke-width="0.8"/>
+            <ellipse cx="250" cy="195" rx="28" ry="17" fill="#091828" stroke="rgba(74,170,210,0.3)" stroke-width="0.5"/>
+            <line x1="250" y1="170" x2="250" y2="220" stroke="rgba(74,170,210,0.2)" stroke-width="0.5"/>
+            <line x1="210" y1="195" x2="290" y2="195" stroke="rgba(74,170,210,0.2)" stroke-width="0.5"/>
+            <text x="250" y="198" font-family="'DM Mono', monospace" font-size="6.5" fill="rgba(74,170,210,0.6)" text-anchor="middle">CLARIFIER</text>
+
+            <!-- Connecting pipe -->
+            <rect x="190" y="190" width="20" height="10" fill="#0D2235" stroke="#4AAAD2" stroke-width="0.6"/>
+
+            <!-- Aeration / Filter beds -->
+            <rect x="305" y="165" width="75" height="60" fill="#0C1E30" stroke="#3DC9A0" stroke-width="0.8"/>
+            <text x="342" y="190" font-family="'DM Mono', monospace" font-size="7" fill="rgba(61,201,160,0.65)" text-anchor="middle">FILTER</text>
+            <text x="342" y="200" font-family="'DM Mono', monospace" font-size="7" fill="rgba(61,201,160,0.65)" text-anchor="middle">BEDS</text>
+            <!-- Filter media lines -->
+            <line x1="313" y1="178" x2="372" y2="178" stroke="rgba(61,201,160,0.25)" stroke-width="0.6"/>
+            <line x1="313" y1="186" x2="372" y2="186" stroke="rgba(61,201,160,0.25)" stroke-width="0.6"/>
+            <line x1="313" y1="194" x2="372" y2="194" stroke="rgba(61,201,160,0.25)" stroke-width="0.6"/>
+            <line x1="313" y1="202" x2="372" y2="202" stroke="rgba(61,201,160,0.25)" stroke-width="0.6"/>
+            <line x1="313" y1="210" x2="372" y2="210" stroke="rgba(61,201,160,0.25)" stroke-width="0.6"/>
+            <!-- Connect pipe -->
+            <rect x="290" y="190" width="15" height="10" fill="#0D2235" stroke="#3DC9A0" stroke-width="0.6"/>
+
+            <!-- Clear water reservoir -->
+            <rect x="400" y="155" width="80" height="90" fill="#091828" stroke="#3DC9A0" stroke-width="1"/>
+            <text x="440" y="196" font-family="'DM Mono', monospace" font-size="7" fill="rgba(61,201,160,0.65)" text-anchor="middle">CLEAR</text>
+            <text x="440" y="206" font-family="'DM Mono', monospace" font-size="7" fill="rgba(61,201,160,0.65)" text-anchor="middle">WATER</text>
+            <text x="440" y="216" font-family="'DM Mono', monospace" font-size="7" fill="rgba(61,201,160,0.65)" text-anchor="middle">SUMP</text>
+            <!-- Water level indicator -->
+            <rect x="402" y="200" width="76" height="43" fill="rgba(61,201,160,0.05)"/>
+            <line x1="402" y1="200" x2="478" y2="200" stroke="rgba(61,201,160,0.3)" stroke-width="0.8"/>
+            <!-- Connect pipe -->
+            <rect x="380" y="190" width="20" height="10" fill="#0D2235" stroke="#3DC9A0" stroke-width="0.6"/>
+
+            <!-- Chemical dosing — overhead -->
+            <rect x="100" y="90" width="30" height="50" fill="#0C1E30" stroke="rgba(255,180,50,0.5)" stroke-width="0.8"/>
+            <text x="115" y="112" font-family="'DM Mono', monospace" font-size="6" fill="rgba(255,180,50,0.6)" text-anchor="middle">DOSE</text>
+            <line x1="115" y1="140" x2="150" y2="170" stroke="rgba(255,180,50,0.35)" stroke-width="0.8" stroke-dasharray="3,2"/>
+
+            <!-- Sludge handling -->
+            <ellipse cx="180" cy="100" rx="25" ry="16" fill="#0C1E30" stroke="rgba(200,150,50,0.4)" stroke-width="0.8"/>
+            <text x="180" y="103" font-family="'DM Mono', monospace" font-size="6" fill="rgba(200,150,50,0.55)" text-anchor="middle">SLUDGE</text>
+            <line x1="155" y1="195" x2="180" y2="116" stroke="rgba(200,150,50,0.3)" stroke-width="0.8" stroke-dasharray="3,2"/>
+
+            <!-- Clash marker -->
+            <circle cx="305" cy="190" r="6" fill="rgba(61,201,160,0.12)" stroke="#3DC9A0" stroke-width="1" stroke-dasharray="2,2"/>
+            <text x="316" y="155" font-family="'DM Mono', monospace" font-size="6.5" fill="#3DC9A0">COORD</text>
+
+            <!-- Capacity annotation -->
+            <rect x="14" y="54" width="100" height="36" fill="rgba(7,15,24,0.85)" stroke="rgba(74,170,210,0.2)" stroke-width="0.5"/>
+            <text x="22" y="68" font-family="'DM Mono', monospace" font-size="7" fill="rgba(74,170,210,0.55)">DESIGN CAPACITY</text>
+            <text x="22" y="82" font-family="'DM Mono', monospace" font-size="14" fill="#4AAAD2">100 MLD</text>
+
+            <!-- Layer legend -->
+            <g transform="translate(430, 14)">
+              <rect x="0" y="0" width="8" height="5" fill="#4AAAD2" opacity="0.7"/>
+              <text x="12" y="5" font-family="'DM Mono', monospace" font-size="7" fill="rgba(74,170,210,0.7)">PROCESS</text>
+              <rect x="0" y="10" width="8" height="5" fill="#3DC9A0" opacity="0.7"/>
+              <text x="12" y="15" font-family="'DM Mono', monospace" font-size="7" fill="rgba(61,201,160,0.7)">CIVIL</text>
+              <rect x="0" y="20" width="8" height="5" fill="rgba(255,180,50,0.6)"/>
+              <text x="12" y="25" font-family="'DM Mono', monospace" font-size="7" fill="rgba(255,180,50,0.6)">MEICA</text>
+            </g>
+
+            <text x="14" y="268" font-family="'DM Mono', monospace" font-size="8" fill="rgba(74,170,210,0.4)" letter-spacing="0.1em">PLAN — PROCESS LAYOUT</text>
+            <text x="14" y="278" font-family="'DM Mono', monospace" font-size="7" fill="rgba(200,225,248,0.2)" letter-spacing="0.08em">LOD 350 · ISO 19650</text>
+          </svg>
+        </div>
+        <div class="project-info">
+          <div class="project-num">03</div>
+          <div class="project-meta">
+            <span class="project-type">Water Treatment · Process Engineering</span>
+            <span class="project-loc">Kollam, Kerala</span>
+          </div>
+          <h3 class="project-title">100 MLD Water Treatment Plant — Kollam, Kerala</h3>
+          <p class="project-desc">A large-scale drinking water treatment facility built to serve Kollam city and surrounding communities in southern Kerala — processing 100 million litres of raw water every day into clean, safe drinking water. The plant takes water from source, aerates it to remove odours, passes it through three large circular settling tanks, filters it through 24 filter beds, and disinfects it before pumping it through a new trunk main to the city. Delivered under the Indian government's AMRUT urban infrastructure programme, the plant directly addresses chronic water scarcity across one of Kerala's largest urban areas.</p>
+          <div class="project-tags">
+            <span class="ptag">100 MLD Capacity</span>
+            <span class="ptag">Drinking Water</span>
+            <span class="ptag">AMRUT Programme</span>
+            <span class="ptag">Kollam Corporation</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <p class="projects-disclaimer">Illustrative BIM coordination models shown. Project works delivered under technical advisory principal with 25 years of infrastructure contracting experience across Kerala and Andhra Pradesh.</p>
+
+  </div>
+</section>
+
+<!-- STANDARDS BAR -->
+<div class="standards-bar">
+  <span class="standards-label">Compliance &amp; standards</span>
+  <div style="font-family:'DM Mono',monospace;font-size:10px;color:rgba(74,170,210,0.55);letter-spacing:0.12em;white-space:nowrap;margin-left:auto;display:flex;gap:16px;align-items:center;">
+    <span style="color:rgba(61,201,160,0.5);">&#9679;</span> London, UK
+    <span style="color:rgba(74,170,210,0.4);">&#9679;</span> Mumbai &amp; Kochi, India
+  </div>
+  <div class="standards-items">
+    <span class="std-item">ISO 19650 Parts 1 &amp; 2</span>
+    <span class="std-item">UK BIM Framework</span>
+    <span class="std-item">CIC BIM Protocol</span>
+    <span class="std-item">BIM4Water Member</span>
+    <span class="std-item">Autodesk ACC / BIM360</span>
+    <span class="std-item">Bentley ProjectWise</span>
+    <span class="std-item">Revit &amp; Civil 3D</span>
+    <span class="std-item">Navisworks Manage</span>
+    <span class="std-item">Synchro 4D</span>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-inner">
+    <div class="contact-left">
+      <div class="section-label teal">Contact</div>
+      <h2>Start a<br><em>conversation.</em></h2>
+      <p>
+        Tell us about your project. We respond within one business day and offer a complimentary 30-minute scoping call for all new enquiries.
+      </p>
+      <div class="contact-details">
+        <div class="contact-detail">
+          <span class="contact-detail-label">Email</span>
+          <span class="contact-detail-val"><a href="mailto:hello@arangath.co.uk">hello@arangath.co.uk</a></span>
+        </div>
+        <div class="contact-detail">
+          <span class="contact-detail-label">Location</span>
+          <span class="contact-detail-val">London, United Kingdom</span>
+        </div>
+        <div class="contact-detail">
+          <span class="contact-detail-label">Delivery</span>
+          <span class="contact-detail-val">Mumbai &amp; Kochi, India</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-form">
+      <div class="form-group">
+        <label class="form-label">Full name</label>
+        <input type="text" class="form-input" placeholder="Your name">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Company</label>
+        <input type="text" class="form-input" placeholder="Your organisation">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-input" placeholder="your@email.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Service required</label>
+        <select class="form-select">
+          <option value="" disabled selected>Select a service</option>
+          <option>BIM Coordination &amp; Clash Detection</option>
+          <option>BIM Execution Plan</option>
+          <option>BIM Strategy &amp; Advisory</option>
+          <option>Not sure — let's discuss</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tell us about your project</label>
+        <textarea class="form-textarea" placeholder="Brief description, timeline, any specific requirements..."></textarea>
+      </div>
+      <button class="form-submit">Send enquiry →</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <svg width="16" height="19" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:middle;margin-right:4px;flex-shrink:0;">
+      <line x1="10" y1="148" x2="80" y2="113" stroke="#4AAAD2" stroke-width="1.8" opacity="0.7"/>
+      <line x1="30" y1="155" x2="100" y2="120" stroke="#4AAAD2" stroke-width="1.4" opacity="0.5"/>
+      <line x1="150" y1="148" x2="80" y2="113" stroke="#4AAAD2" stroke-width="1.8" opacity="0.7"/>
+      <line x1="130" y1="155" x2="60" y2="120" stroke="#4AAAD2" stroke-width="1.4" opacity="0.5"/>
+      <line x1="10" y1="148" x2="150" y2="148" stroke="#4AAAD2" stroke-width="2.5" stroke-linecap="round" opacity="0.75"/>
+      <line x1="20" y1="148" x2="80" y2="12" stroke="#4AAAD2" stroke-width="5" stroke-linecap="round"/>
+      <line x1="140" y1="148" x2="80" y2="12" stroke="#4AAAD2" stroke-width="5" stroke-linecap="round"/>
+      <line x1="35" y1="136" x2="72" y2="42" stroke="#4AAAD2" stroke-width="1.6" opacity="0.6"/>
+      <line x1="50" y1="142" x2="76" y2="68" stroke="#4AAAD2" stroke-width="1.2" opacity="0.42"/>
+      <line x1="125" y1="136" x2="88" y2="42" stroke="#4AAAD2" stroke-width="1.6" opacity="0.6"/>
+      <line x1="110" y1="142" x2="84" y2="68" stroke="#4AAAD2" stroke-width="1.2" opacity="0.42"/>
+      <line x1="27" y1="112" x2="56" y2="112" stroke="#4AAAD2" stroke-width="1.4" opacity="0.55"/>
+      <line x1="34" y1="88" x2="66" y2="88" stroke="#4AAAD2" stroke-width="1.2" opacity="0.45"/>
+      <line x1="133" y1="112" x2="104" y2="112" stroke="#4AAAD2" stroke-width="1.4" opacity="0.55"/>
+      <line x1="126" y1="88" x2="94" y2="88" stroke="#4AAAD2" stroke-width="1.2" opacity="0.45"/>
+      <line x1="44" y1="96" x2="116" y2="96" stroke="#3DC9A0" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="44" cy="96" r="7" fill="#3DC9A0"/>
+      <circle cx="116" cy="96" r="7" fill="#3DC9A0"/>
+      <circle cx="80" cy="12" r="6" fill="#4AAAD2"/>
+    </svg><span style="letter-spacing:0.2em;">RANG<span class="footer-logo-a">A</span>TH</span>
+  </div>
+  <ul class="footer-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div style="display:flex;flex-direction:column;gap:4px;text-align:right;">
+    <span class="footer-note">© 2026 Arangath Ltd · Registered in England &amp; Wales</span>
+    <span style="font-family:'DM Mono',monospace;font-size:10px;color:rgba(200,225,248,0.22);letter-spacing:0.08em;">London · Mumbai · Kochi</span>
+  </div>
+</footer>
+
+</body>
+</html>
