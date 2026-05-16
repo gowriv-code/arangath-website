@@ -1777,22 +1777,24 @@
       </div>
     </div>
 
-    <div class="contact-form">
+    <form class="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="contact"/>
+      <p style="display:none"><input name="bot-field"/></p>
       <div class="form-group">
         <label class="form-label">Full name</label>
-        <input type="text" class="form-input" placeholder="Your name">
+        <input type="text" name="name" class="form-input" placeholder="Your name" required>
       </div>
       <div class="form-group">
         <label class="form-label">Company</label>
-        <input type="text" class="form-input" placeholder="Your organisation">
+        <input type="text" name="company" class="form-input" placeholder="Your organisation">
       </div>
       <div class="form-group">
         <label class="form-label">Email</label>
-        <input type="email" class="form-input" placeholder="your@email.com">
+        <input type="email" name="email" class="form-input" placeholder="your@email.com" required>
       </div>
       <div class="form-group">
         <label class="form-label">Service required</label>
-        <select class="form-select">
+        <select name="service" class="form-select">
           <option value="" disabled selected>Select a service</option>
           <option>BIM Coordination &amp; Clash Detection</option>
           <option>BIM Execution Plan</option>
@@ -1802,10 +1804,10 @@
       </div>
       <div class="form-group">
         <label class="form-label">Tell us about your project</label>
-        <textarea class="form-textarea" placeholder="Brief description, timeline, any specific requirements..."></textarea>
+        <textarea name="message" class="form-textarea" placeholder="Brief description, timeline, any specific requirements..."></textarea>
       </div>
-      <button class="form-submit">Send enquiry →</button>
-    </div>
+      <button type="submit" class="form-submit">Send enquiry →</button>
+    </form>
   </div>
 </section>
 
