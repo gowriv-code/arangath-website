@@ -891,77 +891,6 @@
     .pillars { grid-template-columns: 1fr; }
   }
 
-  /* LEADERSHIP */
-  .leadership {
-    background: var(--off-black);
-    border-top: 1px solid var(--border);
-  }
-
-  .leadership-inner { max-width: 1200px; margin: 0 auto; }
-
-  .leadership-card {
-    display: grid;
-    grid-template-columns: 200px 1fr;
-    gap: 56px;
-    align-items: start;
-    border-top: 1px solid var(--border);
-    padding-top: 52px;
-  }
-
-  .leadership-mark {
-    width: 120px;
-    height: 120px;
-    border: 1px solid var(--border-hover);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--mono);
-    font-size: 30px;
-    letter-spacing: 0.05em;
-    color: var(--gold);
-  }
-
-  .leadership-name {
-    font-family: var(--serif);
-    font-size: clamp(28px, 3vw, 38px);
-    font-weight: 400;
-    letter-spacing: -0.01em;
-    margin-bottom: 8px;
-  }
-
-  .leadership-title {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    color: var(--teal);
-    text-transform: uppercase;
-    margin-bottom: 24px;
-  }
-
-  .leadership-bio {
-    font-family: var(--serif);
-    font-size: 17px;
-    font-weight: 300;
-    color: var(--muted);
-    line-height: 1.8;
-    max-width: 680px;
-  }
-
-  .placeholder {
-    color: var(--gold);
-    border: 1px dashed rgba(74,170,210,0.45);
-    padding: 1px 8px;
-    font-family: var(--mono);
-    font-size: 0.75em;
-    letter-spacing: 0.04em;
-    white-space: nowrap;
-  }
-
-  @media (max-width: 768px) {
-    .leadership-card { grid-template-columns: 1fr; gap: 28px; }
-    .leadership-mark { width: 88px; height: 88px; font-size: 22px; }
-  }
-
   /* PROJECTS */
   .projects {
     background: var(--black);
@@ -1487,25 +1416,6 @@
 
   </div>
 </section>
-
-
-<!-- LEADERSHIP -->
-<section class="leadership" id="leadership">
-  <div class="leadership-inner">
-    <div class="section-label teal">Leadership</div>
-    <div class="leadership-card">
-      <div class="leadership-mark">V</div>
-      <div>
-        <h3 class="leadership-name">Vish <span class="placeholder">[SURNAME]</span></h3>
-        <div class="leadership-title">Founder &amp; Technical Director · <span class="placeholder">[CREDENTIALS — E.G. CENG / MICE]</span></div>
-        <p class="leadership-bio">
-          25+ years delivering civil, water and environmental infrastructure, including the projects behind the case studies above. An engineer who has designed and delivered the physical asset, now bringing that depth to ISO 19650 information management and digital delivery.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
 
 <!-- PROJECTS -->
 <section class="projects" id="projects">
