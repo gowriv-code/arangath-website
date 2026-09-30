@@ -71,8 +71,11 @@ class S:
         s.poly([(x + w, y, z), (x + w, y + d, z), (x + w, y + d, z + h), (x + w, y, z + h)], r, sw=sw)
         s.poly([(x, y, z + h), (x + w, y, z + h), (x + w, y + d, z + h), (x, y + d, z + h)], t, sw=sw)
 
-    def ground(s, x0, y0, x1, y1, step=4):
-        s.poly([(x0, y0, 0), (x1, y0, 0), (x1, y1, 0), (x0, y1, 0)], GROUND, stroke=GRID, sw=0.1)
+    def ground(s, x0, y0, x1, y1, step=4, fill=None, edge=None, slab=0):
+        if slab:  # visible thickness, so the site reads as a model base rather than a flat floor
+            s.poly([(x0, y1, -slab), (x1, y1, -slab), (x1, y1, 0), (x0, y1, 0)], "#16202B", stroke=OUT, sw=0.08)
+            s.poly([(x1, y0, -slab), (x1, y1, -slab), (x1, y1, 0), (x1, y0, 0)], "#1D2A38", stroke=OUT, sw=0.08)
+        s.poly([(x0, y0, 0), (x1, y0, 0), (x1, y1, 0), (x0, y1, 0)], fill or GROUND, stroke=edge or GRID, sw=0.1)
         x = x0 + step
         while x < x1:
             s.line([(x, y0, 0), (x, y1, 0)], GRID, 0.08)
@@ -181,6 +184,13 @@ class S:
             # door
             s.poly([(x + w * 0.15, y + d, z), (x + w * 0.15 + 1.6, y + d, z), (x + w * 0.15 + 1.6, y + d, z + 2.4), (x + w * 0.15, y + d, z + 2.4)], "#3B4A5C", sw=0.04)
 
+    def tree(s, x, y, h=3.0, tone=0):
+        a, b = (("#2F5D4A", "#3F7A61"), ("#2A5442", "#37705A"), ("#34664F", "#478A6C"))[tone % 3]
+        s.line([(x, y, 0), (x, y, h * 0.45)], "#6B5A48", 0.25)
+        s.ell(x, y, h * 0.42, h * 0.32, a, stroke=OUT, sw=0.05)
+        s.ell(x, y, h * 0.62, h * 0.26, b, stroke=OUT, sw=0.05)
+        s.ell(x, y, h * 0.82, h * 0.15, b, stroke=OUT, sw=0.05)
+
     def clash(s, x, y, z, label=None, sub=None, scale=1.0, status="Resolved"):
         (px, py) = P(x, y, z)
         r = 1.1 * scale
@@ -243,7 +253,16 @@ def filter_block(s, x, y, cells=4):
 
 def hero():
     s = S()
-    s.ground(-4, -4, 66, 44, step=4)
+    s.ground(-8, -8, 78, 52, step=4, fill="#223247", edge="#3F5A78", slab=1.6)
+    # lawns and a perimeter road, so the ground has some life
+    s.poly([(-8, -8, 0.01), (78, -8, 0.01), (78, -2, 0.01), (-8, -2, 0.01)], "#1F3A33", stroke="none")
+    s.poly([(62, -2, 0.01), (78, -2, 0.01), (78, 52, 0.01), (62, 52, 0.01)], "#1F3A33", stroke="none")
+    s.poly([(-8, 44, 0.02), (78, 44, 0.02), (78, 49, 0.02), (-8, 49, 0.02)], "#2B3949", stroke="none")
+    s.line([(-8, 46.5, 0.03), (78, 46.5, 0.03)], "#8997A7", 0.14, dash="1.6 1.4", cap="butt")
+    for k, tx in enumerate(range(-4, 76, 7)):
+        s.tree(tx, -5, 3.4 + (k % 3) * 0.5, tone=k)
+    for k, ty in enumerate(range(4, 46, 8)):
+        s.tree(70, ty, 3.2 + (k % 2) * 0.6, tone=k + 1)
     # raw water inlet
     s.pipe([(-4, 22, 1.2), (4, 22, 1.2)], P_RAW, w=0.8, valves=[(1, 22, 1.2)])
     s.clarifier(15, 22, 11, 4.5)
@@ -252,10 +271,17 @@ def hero():
     # outlet to filters
     s.pipe([(26, 20, 3.0), (32, 20, 3.0), (32, 14, 3.0), (34, 14, 3.0)], P_RAW, w=0.7, valves=[(29, 20, 3.0)])
     filter_block(s, 34, 2, cells=4)
+    # clear water tank and treated-water line
+    s.pipe([(56, 8, 2.4), (62, 8, 2.4)], P_RAW, w=0.6)
+    s.cyl(65, 8, 0, 3.6, 5.0)
+    s.ell(65, 8, 5.0, 2.9, WAT)
     # chemical house
     s.building(40, 28, 0, 13, 9, 5.5)
     s.pipe([(40, 32, 1.0), (30, 32, 1.0), (30, 22, 3.2)], P_DOSE, w=0.3)
     s.pipe([(46, 28, 3.0), (46, 21, 3.0)], P_AIR, w=0.45)
+    # small control building and site fence along the road
+    s.building(2, 34, 0, 7, 6, 3.6)
+    s.line([(-7, 42, 0), (77, 42, 0)], "#6F8196", 0.12, dash="0.4 1.2", cap="butt")
     s.clash(46, 23.2, 3.0, "Clash 014", "Air main vs gallery wall", scale=1.25)
     return s
 
