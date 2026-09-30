@@ -547,7 +547,7 @@ def regulator_bridge(bays=8):
     for x in (-1, L + 1):
         (px, py) = P(x, 1, 7.6)
         s.el.append(f'<path d="M{px-1:.2f},{py-3:.2f} l1.2,1.2 l-1.2,1.2 l1.2,1.2 l-1.2,1.2" fill="none" stroke="#EEF4F1" stroke-width="0.25"></path>')
-    s.label(L * 0.05, -12, 3.3, "Bharathapuzha river, upstream", color="#DDE4EB", size=1.5)
+    s.label(L * 0.05, -12, 3.3, "Bharathapuzha River", color="#DDE4EB", size=1.5)
     s.label(L * 0.62, 12, 0.9, "Downstream", color="#DDE4EB", size=1.5)
     (tx, ty) = P(L * 0.72, 1, 15)
     s.el.append(f'<rect x="{tx-14:.2f}" y="{ty-3.2:.2f}" width="28" height="4.6" rx="2.3" fill="#0D1319" stroke="#4FB3E8" stroke-width="0.15"></rect><text x="{tx:.2f}" y="{ty:.2f}" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="1.9" font-weight="700" fill="#EEF4F1">978 m · 70 sluice gates</text>')
