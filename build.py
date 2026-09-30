@@ -412,7 +412,7 @@ def services_page():
         for c in s["cards"]:
             cards += service_card(c, link=s.get("detail"))  # "Learn more" only where a detail page exists
         groups += f'''<section class="svc-group" id="{s["slug"]}">
-<div class="banner{flip}" style="background:{s["color"]}"><div class="panel" style="background:{s["color"]}"><h2>{e(s["title"])}</h2><p>{e(s["banner"])}</p>{btn}</div>{img(s["banner_img"], ALT[s["banner_img"]])}</div>
+<div class="banner{flip}"><div class="panel" style="background:{s["color"]}"><h2>{e(s["title"])}</h2><p>{e(s["banner"])}</p>{btn}</div>{img(s["banner_img"], ALT[s["banner_img"]])}</div>
 <div class="grid grid-3">{cards}</div></section>'''
     body = f'''<section class="page-head">{img("pumping-station", "", "fade", loading="eager").replace('alt=""', 'alt="" aria-hidden="true"')}<div class="wrap">
 {breadcrumb([("Home", "/"), ("Services", None)])}

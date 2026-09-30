@@ -365,3 +365,14 @@ figcaption { font-size: 14px; color: var(--text-3); margin-top: 10px; }
 .hero-panel::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(79,179,232,.10) 1px, transparent 1px), linear-gradient(90deg, rgba(79,179,232,.10) 1px, transparent 1px); background-size: 34px 34px; -webkit-mask-image: radial-gradient(ellipse at 55% 45%, #000 25%, transparent 78%); mask-image: radial-gradient(ellipse at 55% 45%, #000 25%, transparent 78%); }
 .hero-panel img { position: relative; transform: scale(1.03); }
 .eyebrow.blue { letter-spacing: .09em; }
+
+/* Shared illustration backdrop: glow + blueprint grid, used behind every model drawing */
+.illus-panel, .card.service-home .pic, .project-card .pic, .model, .banner { background: radial-gradient(circle at 78% 12%, rgba(79,179,232,.24), transparent 55%), radial-gradient(circle at 8% 92%, rgba(60,201,159,.12), transparent 50%), #131C26; position: relative; overflow: hidden; }
+.card.service-home .pic::before, .project-card .pic::before, .illus-panel::before, .model::before { content: ''; position: absolute; inset: 0; pointer-events: none; background-image: linear-gradient(rgba(79,179,232,.09) 1px, transparent 1px), linear-gradient(90deg, rgba(79,179,232,.09) 1px, transparent 1px); background-size: 30px 30px; -webkit-mask-image: radial-gradient(ellipse at 55% 45%, #000 25%, transparent 80%); mask-image: radial-gradient(ellipse at 55% 45%, #000 25%, transparent 80%); }
+.card.service-home .pic img, .project-card .pic img, .illus-panel img, .model-stage, .model-controls, .model-keys, .model-status { position: relative; }
+.banner::before { content: ''; position: absolute; inset: 0; pointer-events: none; background-image: linear-gradient(rgba(79,179,232,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(79,179,232,.08) 1px, transparent 1px); background-size: 30px 30px; }
+.cta-circle { background: radial-gradient(circle at 70% 20%, rgba(79,179,232,.3), transparent 60%), #131C26; }
+.model-tip, .tag-live { z-index: 5; }
+.hero-panel { background: radial-gradient(circle at 78% 12%, rgba(79,179,232,.26), transparent 55%), radial-gradient(circle at 8% 92%, rgba(60,201,159,.14), transparent 50%), #131C26; }
+.card.service-home .pic img { transform: scale(1.12); }
+.card.service-home .pic { padding: 10px; }
