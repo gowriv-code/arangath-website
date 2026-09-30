@@ -46,6 +46,7 @@ p { color: var(--text-2); }
 .section { padding: 96px 0; }
 .section.alt { background: var(--bg-alt); }
 .eyebrow { font-family: var(--font-body); font-weight: 700; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--green); margin-bottom: 16px; }
+.eyebrow.blue { color: var(--blue); }
 .lede { font-size: 19px; color: var(--text-2); max-width: 640px; }
 .section-head { max-width: 720px; margin-bottom: 48px; }
 .section-head h2 { margin-bottom: 14px; }
@@ -359,3 +360,8 @@ figcaption { font-size: 14px; color: var(--text-3); margin-top: 10px; }
   .cta-circle { width: 220px; height: 220px; }
   .page-head { padding: 48px 0 40px; }
 }
+
+.hero-panel { background: radial-gradient(ellipse at 60% 40%, #24374A 0%, #1A2531 55%, #141D27 100%); position: relative; overflow: hidden; padding: 16px; }
+.hero-panel::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(#3A4E63 1px, transparent 1.2px); background-size: 22px 22px; opacity: .45; -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%); mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%); }
+.hero-panel img { position: relative; transform: translateX(-3%) scale(1.08); }
+.eyebrow.blue { letter-spacing: .09em; }

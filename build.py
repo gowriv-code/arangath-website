@@ -194,7 +194,7 @@ def lockup(cls="", animated=False):
             '<span aria-hidden="true">R<span class="g">A</span>NGATH</span></a>')
 
 
-NAV = [("Services", "/services"), ("Projects", "/#projects"), ("About", "/#why"), ("Careers", "/careers"), ("Blog", "/blog")]
+NAV = [("Home", "/"), ("Services", "/services"), ("Projects", "/#projects"), ("About", "/#why"), ("Careers", "/careers"), ("Blog", "/blog")]
 
 
 def header(current=""):
@@ -332,8 +332,8 @@ def contact_section():
 <p class="lede">Send a few lines on what you are building. We reply within one business day.</p>
 <a class="contact-email" href="mailto:{EMAIL}">{EMAIL}</a>
 <div class="addr-grid">
-<div class="addr"><h3>UK office</h3><address>66 Paul Street<br>London EC2A 4NA<br>United Kingdom</address><span class="role">Client-facing</span></div>
-<div class="addr"><h3>India office</h3><address>Near Petta Bus Stop, Ettumanoor–Ernakulam Road, Petta, Poonithura, Maradu, Kochi, Ernakulam, Kerala 682038, India</address><span class="role">Delivery · <a href="{MAPS}" rel="noopener" target="_blank">Open in Google Maps</a> (X82J+C7W)</span></div>
+<div class="addr"><h3>UK office</h3><address>66 Paul Street<br>London EC2A 4NA<br>United Kingdom</address></div>
+<div class="addr"><h3>India office</h3><address>Near Petta Bus Stop, Ettumanoor–Ernakulam Road, Petta, Poonithura, Maradu, Kochi, Ernakulam, Kerala 682038, India</address><span class="role"><a href="{MAPS}" rel="noopener" target="_blank">Open in Google Maps</a> (X82J+C7W)</span></div>
 </div>
 </div>
 <form class="form" name="contact" method="POST" action="/thank-you/" data-netlify="true" netlify-honeypot="bot-field">
@@ -373,11 +373,11 @@ def home():
         f'<a class="badge-tile" href="{e(b["url"])}" target="_blank" rel="noopener"><picture><source srcset="{b["src"]}.webp" type="image/webp"><img src="{b["src"]}.png" alt="{e(b["name"])}" loading="lazy" width="160" height="{b.get("h", 100)}"></picture></a>'
         for b in load_badges())
     body = f'''<section class="hero"><div class="wrap hero-grid">
-<div><p class="eyebrow">Consulting and digital engineering for water infrastructure</p>
+<div><p class="eyebrow blue">Consulting and digital engineering for water infrastructure</p>
 <h1>Engineered and modelled right, first time.</h1>
 <p class="lede">We give water-sector contractors the design consulting, information management and BIM modelling to get schemes coordinated before they reach site.</p>
 <div class="btn-row"><a class="btn btn-primary" href="#contact">Tell us about your scheme</a><a class="btn btn-outline" href="#services">See our services</a></div></div>
-<div class="illus-panel">{img("treatment-works", ALT["treatment-works"], loading="eager", w=800, h=560)}</div>
+<div class="illus-panel hero-panel">{img("treatment-works", ALT["treatment-works"], loading="eager", w=800, h=560)}</div>
 </div></section>
 <section class="section alt" id="services"><div class="wrap">
 <div class="section-head"><p class="eyebrow">Services</p><h2>Four ways we help</h2></div>
@@ -397,7 +397,7 @@ def home():
 {contact_section()}'''
     return page("Arangath | Consulting and digital engineering for water infrastructure",
                 "Design consulting, information management and BIM modelling for water-sector contractors. UK-led, with production in Kochi, India.",
-                body, "/", current="")
+                body, "/", current="Home")
 
 
 def services_page():

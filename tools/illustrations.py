@@ -181,19 +181,33 @@ class S:
             # door
             s.poly([(x + w * 0.15, y + d, z), (x + w * 0.15 + 1.6, y + d, z), (x + w * 0.15 + 1.6, y + d, z + 2.4), (x + w * 0.15, y + d, z + 2.4)], "#3B4A5C", sw=0.04)
 
-    def clash(s, x, y, z, label=None, sub=None, scale=1.0):
+    def clash(s, x, y, z, label=None, sub=None, scale=1.0, status="Resolved"):
         (px, py) = P(x, y, z)
         r = 1.1 * scale
-        s.el.append(f'<circle cx="{px:.2f}" cy="{py:.2f}" r="{r*1.9:.2f}" fill="{AMBER}" opacity="0.22"></circle><circle cx="{px:.2f}" cy="{py:.2f}" r="{r:.2f}" fill="none" stroke="{AMBER}" stroke-width="{0.3*scale:.2f}"></circle><circle cx="{px:.2f}" cy="{py:.2f}" r="{r*0.35:.2f}" fill="{AMBER}"></circle>')
+        s._track([(px - r * 2.4, py - r * 2.4), (px + r * 2.4, py + r * 2.4)])
+        # soft halo that pulses (SMIL, so it also runs when the SVG is used as an <img>)
+        s.el.append(f'<circle cx="{px:.2f}" cy="{py:.2f}" r="{r*1.9:.2f}" fill="{AMBER}" opacity="0.22"><animate attributeName="r" values="{r*1.6:.2f};{r*2.5:.2f};{r*1.6:.2f}" dur="2.6s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.3;0.06;0.3" dur="2.6s" repeatCount="indefinite"/></circle>')
+        s.el.append(f'<circle cx="{px:.2f}" cy="{py:.2f}" r="{r:.2f}" fill="none" stroke="{AMBER}" stroke-width="{0.3*scale:.2f}"></circle><circle cx="{px:.2f}" cy="{py:.2f}" r="{r*0.35:.2f}" fill="{AMBER}"></circle>')
         if label and LABELS:
-            bx, by = px + 3 * scale, py + 2.5 * scale
-            bw, bh = 21 * scale, 6.2 * scale
-            s._track([(bx + bw, by + bh)])
-            s.el.append(f'<line x1="{px+r:.2f}" y1="{py+r*0.5:.2f}" x2="{bx:.2f}" y2="{by+1.5*scale:.2f}" stroke="{AMBER}" stroke-width="{0.12*scale:.2f}"></line>')
-            s.el.append(f'<rect x="{bx:.2f}" y="{by:.2f}" width="{bw:.2f}" height="{bh:.2f}" rx="{1*scale:.2f}" fill="#0D1319" stroke="{AMBER}" stroke-width="{0.15*scale:.2f}"></rect>')
-            s.el.append(f'<text x="{bx+1.4*scale:.2f}" y="{by+2.6*scale:.2f}" font-family="DM Sans, sans-serif" font-weight="700" font-size="{1.9*scale:.2f}" fill="{AMBER}">{label}</text>')
+            k = scale
+            bw, bh = 31 * k, 8.6 * k
+            bx, by = px + 4.5 * k, py + 5.2 * k
+            s._track([(bx + bw + 1, by + bh + 1)])
+            gid = f"{s.pfx}sh"
+            s.el.append(f'<defs><filter id="{gid}" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="{0.5*k:.2f}" stdDeviation="{0.7*k:.2f}" flood-color="#000" flood-opacity="0.55"/></filter></defs>')
+            # leader: elbow from the ring to the card
+            s.el.append(f'<polyline points="{px+r*0.8:.2f},{py+r*0.6:.2f} {px+2.4*k:.2f},{py+2.6*k:.2f} {bx:.2f},{by+bh*0.5:.2f}" fill="none" stroke="{AMBER}" stroke-width="{0.14*k:.2f}" stroke-linecap="round" stroke-linejoin="round"></polyline>')
+            s.el.append(f'<rect x="{bx:.2f}" y="{by:.2f}" width="{bw:.2f}" height="{bh:.2f}" rx="{1.7*k:.2f}" fill="#111B26" stroke="{AMBER}" stroke-width="{0.16*k:.2f}" filter="url(#{gid})"></rect>')
+            # amber tick badge
+            cx, cy = bx + 3.3 * k, by + bh * 0.5
+            s.el.append(f'<circle cx="{cx:.2f}" cy="{cy:.2f}" r="{1.9*k:.2f}" fill="{AMBER}"></circle><polyline points="{cx-0.9*k:.2f},{cy+0.05*k:.2f} {cx-0.2*k:.2f},{cy+0.8*k:.2f} {cx+1.0*k:.2f},{cy-0.8*k:.2f}" fill="none" stroke="#0D1319" stroke-width="{0.38*k:.2f}" stroke-linecap="round" stroke-linejoin="round"></polyline>')
+            tx = bx + 6.6 * k
+            s.el.append(f'<text x="{tx:.2f}" y="{by+3.5*k:.2f}" font-family="DM Sans, sans-serif" font-weight="700" font-size="{2.3*k:.2f}" fill="#EEF4F1">{label}</text>')
             if sub:
-                s.el.append(f'<text x="{bx+1.4*scale:.2f}" y="{by+4.9*scale:.2f}" font-family="DM Sans, sans-serif" font-size="{1.6*scale:.2f}" fill="#A7B4C2">{sub}</text>')
+                s.el.append(f'<text x="{tx:.2f}" y="{by+6.3*k:.2f}" font-family="DM Sans, sans-serif" font-size="{1.75*k:.2f}" fill="#B5C2CF">{sub}</text>')
+            if status:
+                pw = 8.4 * k
+                s.el.append(f'<rect x="{bx+bw-pw-1.3*k:.2f}" y="{by+1.35*k:.2f}" width="{pw:.2f}" height="{2.6*k:.2f}" rx="{1.3*k:.2f}" fill="#34C17F"></rect><text x="{bx+bw-pw/2-1.3*k:.2f}" y="{by+3.2*k:.2f}" text-anchor="middle" font-family="DM Sans, sans-serif" font-weight="700" font-size="{1.45*k:.2f}" fill="#06211A">{status.upper()}</text>')
 
     def label(s, x, y, z, txt, color="#A7B4C2", size=1.8, anchor="start", weight=400):
         (px, py) = P(x, y, z)
@@ -242,7 +256,7 @@ def hero():
     s.building(40, 28, 0, 13, 9, 5.5)
     s.pipe([(40, 32, 1.0), (30, 32, 1.0), (30, 22, 3.2)], P_DOSE, w=0.3)
     s.pipe([(46, 28, 3.0), (46, 21, 3.0)], P_AIR, w=0.45)
-    s.clash(46, 23.2, 3.0, "Clash 014 · resolved", "Air main vs gallery wall", scale=1.0)
+    s.clash(46, 23.2, 3.0, "Clash 014", "Air main vs gallery wall", scale=1.25)
     return s
 
 
