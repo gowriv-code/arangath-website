@@ -158,8 +158,37 @@ def load_badges():
 
 
 # ---------------------------------------------------------------- layout
-def lockup(cls=""):
+def _animated_mark():
+    """Inline copy of the logo mark with classes so CSS can draw it in: legs, crossbar, dots, then fine lines."""
+    svg = open(os.path.join(ROOT, "assets", "logo", "arangath-mark-dark-bg.svg"), encoding="utf-8").read()
+    svg = re.sub(r"<metadata>.*?</metadata>", "", svg, flags=re.S)
+    svg = svg.replace(' xmlns:c2pa="http://c2pa.org/manifest"', "").replace('width="137" height="180"', 'width="26" height="34" aria-hidden="true" focusable="false"')
+    n = [0]
+
+    def tag(m):
+        t = m.group(0)
+        n[0] += 1
+        if t.startswith("<circle"):
+            cls = "dot"
+        elif 'stroke-width="6.2"' in t:
+            cls = "leg"
+        elif 'stroke-width="4.2"' in t:
+            cls = "bar"
+        else:
+            cls = "thin"
+        t = t.replace("/>", f' class="{cls}" style="--i:{n[0]}"/>')
+        if t.startswith("<line"):
+            t = t.replace("<line", '<line pathLength="1"', 1)
+        return t
+    return re.sub(r"<(?:line|circle)[^>]*/>", tag, svg)
+
+
+def lockup(cls="", animated=False):
     # The mark stands in for the first "A"; the A after the R is logo green.
+    if animated:
+        letters = "".join(f'<span class="l{" g" if ch == "A" and i == 1 else ""}" style="--i:{i}">{ch}</span>' for i, ch in enumerate("RANGATH"))
+        return (f'<a class="lockup anim {cls}" href="/" aria-label="Arangath">{_animated_mark()}<span aria-hidden="true">{letters}</span></a>'
+                "<script>try{var l=document.querySelector('.lockup.anim');if(sessionStorage.getItem('lp'))l.classList.remove('anim');else sessionStorage.setItem('lp','1')}catch(e){}</script>")
     return (f'<a class="lockup {cls}" href="/" aria-label="Arangath">'
             '<img src="/assets/logo/arangath-mark-dark-bg.svg" alt="" width="26" height="34">'
             '<span aria-hidden="true">R<span class="g">A</span>NGATH</span></a>')
@@ -175,7 +204,7 @@ def header(current=""):
         items.append(f'<li><a href="{href}"{cur}>{label}</a></li>')
     items.append('<li><a class="btn btn-primary btn-mobile" href="/#contact">Get in touch</a></li>')
     return f'''<header class="site-header"><div class="wrap nav">
-{lockup()}
+{lockup(animated=True)}
 <ul class="nav-links" id="nav-links">{"".join(items)}</ul>
 <a class="btn btn-primary" href="/#contact">Get in touch</a>
 <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Menu"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>

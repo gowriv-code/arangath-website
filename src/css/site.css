@@ -65,6 +65,20 @@ p { color: var(--text-2); }
 .lockup { display: inline-flex; align-items: center; text-decoration: none; font-family: var(--font-head); font-weight: 600; font-size: 22px; letter-spacing: 0.16em; color: #EEF4F1; line-height: 1; }
 .lockup img { height: 34px; width: auto; margin-right: 3px; }
 .lockup .g { color: var(--logo-green); }
+.lockup svg { height: 34px; width: auto; margin-right: 3px; overflow: visible; }
+/* Build-in animation: legs draw, crossbar draws, nodes pop, fine lines draw, letters fade in. Plays once per visit. */
+@media (prefers-reduced-motion: no-preference) {
+  .lockup.anim .leg { stroke-dasharray: 1; stroke-dashoffset: 1; animation: lk-draw .8s cubic-bezier(.6,.1,.3,1) .1s forwards; }
+  .lockup.anim .leg + .leg { animation-delay: .25s; }
+  .lockup.anim .bar { stroke-dasharray: 1; stroke-dashoffset: 1; animation: lk-draw .45s ease .95s forwards; }
+  .lockup.anim .dot { opacity: 0; transform-box: fill-box; transform-origin: center; animation: lk-pop .35s cubic-bezier(.3,1.6,.5,1) 1.1s forwards; }
+  .lockup.anim .dot:first-of-type { animation-delay: .05s; }
+  .lockup.anim .thin { stroke-dasharray: 1; stroke-dashoffset: 1; animation: lk-draw .45s ease forwards; animation-delay: calc(1.3s + var(--i) * .03s); }
+  .lockup.anim .l { opacity: 0; animation: lk-fade .4s ease forwards; animation-delay: calc(1.6s + var(--i) * .07s); }
+}
+@keyframes lk-draw { to { stroke-dashoffset: 0; } }
+@keyframes lk-pop { from { opacity: 0; transform: scale(.2); } to { opacity: 1; transform: scale(1); } }
+@keyframes lk-fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 .lockup.sm img { height: 28px; }
 .lockup.sm { font-size: 18px; }
 .nav-links { display: flex; align-items: center; gap: 30px; list-style: none; }
