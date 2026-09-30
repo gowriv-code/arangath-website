@@ -491,10 +491,10 @@ def regulator_bridge(bays=8):
     s = S()
     L = bays * 6
     with s.g("structure"):
-        s.poly([(-6, -14, -1), (L + 6, -14, -1), (L + 6, 16, -1), (-6, 16, -1)], "#1E2A36", stroke=GRID, sw=0.08)
+        s.poly([(-6, -14, -1), (L + 14, -14, -1), (L + 14, 16, -1), (-6, 16, -1)], "#1E2A36", stroke=GRID, sw=0.08)
     with s.g("structure", tip="River banks", key="banks"):
         s.poly([(-6, -14, 0), (-1, -14, 0), (-1, 16, 0), (-6, 16, 0)], "#3B4A3A", stroke=OUT, sw=0.06)
-        s.poly([(L + 1, -14, 0), (L + 6, -14, 0), (L + 6, 16, 0), (L + 1, 16, 0)], "#3B4A3A", stroke=OUT, sw=0.06)
+        s.poly([(L + 1, -14, 0), (L + 14, -14, 0), (L + 14, 16, 0), (L + 1, 16, 0)], "#3B4A3A", stroke=OUT, sw=0.06)
     # upstream (high) and downstream (low) water
     with s.g("water", tip="Upstream water, held higher by the gates", key="upstream"):
         s.poly([(-1, -14, 3.2), (L + 1, -14, 3.2), (L + 1, 0, 3.2), (-1, 0, 3.2)], WAT, stroke="none", op=0.9)
@@ -506,6 +506,19 @@ def regulator_bridge(bays=8):
         for k in range(5):
             y = 5 + k * 2.2
             s.line([(4 + k * 5, y, 0.81), (L - 8 + k * 5, y, 0.81)], WAT_HI, 0.1, op=0.4, dash="3 2.4", cls="flow")
+    # irrigation: a canal takes water from the upstream pond, with farmland either side
+    with s.g("structure", tip="Farmland irrigated from the canal", key="farmland"):
+        for (fy0, fy1) in ((-14, -10.5), (-5, 3)):
+            s.poly([(L + 2, fy0, 0.05), (L + 13, fy0, 0.05), (L + 13, fy1, 0.05), (L + 2, fy1, 0.05)], "#4A6B3F", stroke=OUT, sw=0.05)
+            yy = fy0 + 0.9
+            while yy < fy1 - 0.3:
+                s.line([(L + 2.4, yy, 0.06), (L + 12.6, yy, 0.06)], "#6E9660", 0.1, op=0.8)
+                yy += 1.2
+    with s.g("water", tip="Irrigation canal fed from the upstream pond", key="canal"):
+        s.poly([(L + 1, -9.5, 0.25), (L + 13, -9.5, 0.25), (L + 13, -6, 0.25), (L + 1, -6, 0.25)], "#2F7FB8", stroke=OUT, sw=0.05)
+        s.line([(L + 2, -7.75, 0.3), (L + 12.5, -7.75, 0.3)], WAT_HI, 0.12, op=0.7, dash="3 2.4", cls="flow")
+    s.label(L + 2, -15, 0.4, "Farmland", color="#DDE4EB", size=1.4)
+    s.label(L + 3, -4.4, 0.4, "Irrigation canal", color="#DDE4EB", size=1.4)
     # piers and gates, drawn bay by bay so the depth order stays right
     for i in range(bays + 1):
         x = i * 6
@@ -527,11 +540,14 @@ def regulator_bridge(bays=8):
         s.poly([(-1, -0.4, 6.91), (L + 1, -0.4, 6.91), (L + 1, 2.4, 6.91), (-1, 2.4, 6.91)], "#2F3D4E", sw=0.03)
         s.line([(-1, 1.0, 6.92), (L + 1, 1.0, 6.92)], "#EEF4F1", 0.12, dash="1.2 1", cap="butt")
         s.rail([(-1, 2.6, 6.9), (L + 1, 2.6, 6.9)], h=0.9, post=2.4)
+    with s.g("structure", tip="Road traffic on the bridge", key="traffic"):
+        for vx, col in ((6, ("#E3D26F", "#A89A45", "#C7B757")), (19, ("#8FD0F2", "#4F8FB3", "#6FB0D4")), (33, ("#E8EEF3", "#9AA8B7", "#B7C3CF")), (42, ("#D98A6A", "#9E5D44", "#BE7656"))):
+            s.box(vx, 0.1, 6.92, 2.4, 1.1, 0.9, t=col[0], l=col[1], r=col[2], sw=0.04)
     # break lines at both ends
     for x in (-1, L + 1):
         (px, py) = P(x, 1, 7.6)
         s.el.append(f'<path d="M{px-1:.2f},{py-3:.2f} l1.2,1.2 l-1.2,1.2 l1.2,1.2 l-1.2,1.2" fill="none" stroke="#EEF4F1" stroke-width="0.25"></path>')
-    s.label(L * 0.05, -12, 3.3, "Upstream pond", color="#DDE4EB", size=1.5)
+    s.label(L * 0.05, -12, 3.3, "Bharathapuzha river, upstream", color="#DDE4EB", size=1.5)
     s.label(L * 0.62, 12, 0.9, "Downstream", color="#DDE4EB", size=1.5)
     (tx, ty) = P(L * 0.72, 1, 15)
     s.el.append(f'<rect x="{tx-14:.2f}" y="{ty-3.2:.2f}" width="28" height="4.6" rx="2.3" fill="#0D1319" stroke="#4FB3E8" stroke-width="0.15"></rect><text x="{tx:.2f}" y="{ty:.2f}" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="1.9" font-weight="700" fill="#EEF4F1">978 m · 70 sluice gates</text>')
