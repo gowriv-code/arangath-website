@@ -466,6 +466,8 @@ CAREERS_FIXES = [
     ("Familiarity with Common Data Environments (BIM360 / ACC or ProjectWise).", "Familiarity with Common Data Environments."),
     ("Support 4D sequencing (Synchro) and digital-delivery consultancy for Tier 2 contractors entering AMP8 frameworks.", "Support digital-delivery consultancy for Tier 2 contractors entering new frameworks."),
     ("Synchro 4D sequencing, Dynamo automation, or Scan to BIM leadership.", "Dynamo automation or Scan to BIM leadership."),
+    ("based in India (Kochi and Mumbai)", "based in Kochi, India"),
+    ("based in Kochi and Mumbai, India", "based in Kochi, India"),
 ]
 
 
