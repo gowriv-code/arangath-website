@@ -186,7 +186,7 @@ def footer():
     svc = "".join(f'<li><a href="{s.get("detail", "/services#" + s["slug"])}">{e(s["title"])}</a></li>' for s in SERVICES)
     return f'''<footer class="site-footer"><div class="wrap">
 <div class="footer-grid">
-<div>{lockup("sm")}<p class="footer-note">Consulting and digital engineering for water.</p></div>
+<div>{lockup("sm")}<p class="footer-note">Consulting and digital engineering for water infrastructure.</p></div>
 <div><h2>Company</h2><ul><li><a href="/#why">About</a></li><li><a href="/careers">Careers</a></li><li><a href="/blog">Blog</a></li><li><a href="{LINKEDIN}" rel="noopener" target="_blank">LinkedIn</a></li></ul></div>
 <div><h2>Services</h2><ul>{svc}</ul></div>
 <div><h2>UK office</h2><address>66 Paul Street<br>London EC2A 4NA<br>United Kingdom<br><a href="mailto:{EMAIL}">{EMAIL}</a></address></div>
@@ -344,7 +344,7 @@ def home():
         f'<a class="badge-tile" href="{e(b["url"])}" target="_blank" rel="noopener"><picture><source srcset="{b["src"]}.webp" type="image/webp"><img src="{b["src"]}.png" alt="{e(b["name"])}" loading="lazy" width="160" height="{b.get("h", 100)}"></picture></a>'
         for b in load_badges())
     body = f'''<section class="hero"><div class="wrap hero-grid">
-<div><p class="eyebrow">Consulting and digital engineering for water</p>
+<div><p class="eyebrow">Consulting and digital engineering for water infrastructure</p>
 <h1>Engineered and modelled right, first time.</h1>
 <p class="lede">We give water-sector contractors the design consulting, information management and BIM modelling to get schemes coordinated before they reach site.</p>
 <div class="btn-row"><a class="btn btn-primary" href="#contact">Tell us about your scheme</a><a class="btn btn-outline" href="#services">See our services</a></div></div>
@@ -366,7 +366,7 @@ def home():
 {f'<div><h2>Memberships</h2>{badges}</div>' if badges else ''}
 </div></section>
 {contact_section()}'''
-    return page("Arangath | Consulting and digital engineering for water",
+    return page("Arangath | Consulting and digital engineering for water infrastructure",
                 "Design consulting, information management and BIM modelling for water-sector contractors. UK-led, with production in Kochi, India.",
                 body, "/", current="")
 
