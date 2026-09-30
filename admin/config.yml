@@ -1,0 +1,41 @@
+# Decap CMS: the browser editor for the blog, at /admin.
+# Sign-in uses GitHub through Netlify's OAuth provider (Site configuration > Access & security > OAuth).
+# Netlify Identity and Git Gateway are deprecated, so they are deliberately not used here.
+backend:
+  name: github
+  repo: gowriv-code/arangath-website
+  branch: main
+  base_url: https://api.netlify.com
+  auth_endpoint: auth
+
+publish_mode: simple        # Save writes to the repo; the "Draft" switch below keeps a post off the live site
+media_folder: assets/blog
+public_folder: /assets/blog
+site_url: https://arangath.co.uk
+display_url: https://arangath.co.uk
+
+collections:
+  - name: blog
+    label: Blog posts
+    label_singular: Blog post
+    folder: content/blog
+    create: true
+    extension: md
+    format: frontmatter
+    slug: "{{slug}}"
+    summary: "{{title}} ({{date}})"
+    sortable_fields: [date, title]
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: URL slug, name: slug, widget: string, hint: "Lower case, words separated by hyphens. It becomes arangath.co.uk/blog/your-slug" }
+      - { label: Date, name: date, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: Summary, name: summary, widget: text, hint: "One or two sentences. Used under the title, in Google results and in LinkedIn previews." }
+      - label: Category
+        name: category
+        widget: select
+        options: ["Design consulting", "Information management", "BIM and coordination", "Digital delivery", "Company news"]
+      - { label: Author, name: author, widget: string, default: Arangath }
+      - { label: Cover image, name: cover, widget: image, hint: "Landscape, at least 1200 pixels wide. Also used as the LinkedIn preview image." }
+      - { label: Cover image description, name: cover_alt, widget: string, hint: "Describe the picture in a few words, for people who cannot see it." }
+      - { label: Draft, name: draft, widget: boolean, default: true, hint: "Leave ON to save without publishing. Switch OFF and save to publish." }
+      - { label: Body, name: body, widget: markdown }

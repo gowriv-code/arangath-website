@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Careers — BIM Modeller &amp; BIM Lead Jobs, Kochi | Arangath</title>
-<meta name="description" content="Arangath is building its BIM delivery team in Kochi, Kerala. Open roles: BIM Modeller (Civil &amp; Infrastructure) and BIM Lead / Founder's Associate, working on live UK and Indian water and civil infrastructure to ISO 19650 standards.">
+<title>BIM Lead / Founder's Associate — Kochi | Arangath Careers</title>
+<meta name="description" content="Arangath is hiring a BIM Lead / Founder's Associate in Kochi, Kerala. 6–10 years' BIM coordination and delivery leadership. Own delivery across UK and Indian water and civil infrastructure projects to ISO 19650 standards. ₹9–11 LPA + bonus.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
@@ -1171,19 +1171,164 @@
 
 </style>
 <style>
-  .careers-hero { padding: 180px 60px 100px; max-width: 1200px; margin: 0 auto; }
-  .careers-hero h1 { font-family: var(--serif); font-size: clamp(40px, 5vw, 64px); font-weight: 300; line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 28px; max-width: 720px; }
-  .careers-hero h1 em { font-style: italic; color: var(--teal); }
-  .careers-hero p { font-family: var(--serif); font-size: 18px; font-weight: 300; color: var(--muted); line-height: 1.8; max-width: 640px; }
-  .roles-section { padding: 0 60px 140px; max-width: 1200px; margin: 0 auto; }
-  .role-card { display: block; text-decoration: none; color: inherit; }
-  .role-card .service-card { height: 100%; }
-  .role-card:hover .service-title { color: var(--teal); }
+  .job-hero { padding: 180px 60px 40px; max-width: 900px; margin: 0 auto; }
+  .job-hero .back-link { font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--very-muted); text-decoration: none; display: inline-block; margin-bottom: 24px; }
+  .job-hero .back-link:hover { color: var(--white); }
+  .job-hero h1 { font-family: var(--serif); font-size: clamp(34px, 4vw, 52px); font-weight: 300; line-height: 1.1; letter-spacing: -0.01em; margin: 10px 0 16px; }
+  .job-tagline { font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--teal); }
+
+  .job-content { max-width: 900px; margin: 0 auto; padding: 0 60px 140px; }
+
+  .job-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 28px;
+    border: 1px solid var(--border);
+    padding: 32px;
+    margin-bottom: 64px;
+  }
+
+  .job-meta-val {
+    font-family: var(--serif);
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--white);
+    margin-top: 8px;
+  }
+
+  .jd-section {
+    margin-bottom: 56px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+  }
+
+  .jd-section:first-of-type { border-top: none; padding-top: 0; }
+
+  .jd-section h2 {
+    font-family: var(--serif);
+    font-size: clamp(24px, 2.5vw, 30px);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    margin-bottom: 20px;
+  }
+
+  .jd-section p {
+    font-family: var(--serif);
+    font-size: 17px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.85;
+    margin-bottom: 16px;
+  }
+
+  .jd-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .jd-list li {
+    font-family: var(--serif);
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.8;
+    padding-left: 22px;
+    position: relative;
+  }
+
+  .jd-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+  }
+
+  .apply-band {
+    border-top: 1px solid var(--border);
+    margin-top: 20px;
+    padding-top: 56px;
+  }
+
+  .apply-cta {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    color: var(--teal);
+    text-transform: uppercase;
+    background: transparent;
+    border: 1px solid rgba(61,201,160,0.35);
+    padding: 18px 36px;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .apply-cta:hover {
+    background: var(--teal-dim);
+    border-color: var(--teal);
+  }
+
+  .apply-fallback {
+    font-family: var(--serif);
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--very-muted);
+    margin-top: 20px;
+  }
+
+  .apply-fallback a {
+    color: var(--white);
+  }
+
   @media (max-width: 768px) {
-    .careers-hero { padding: 140px 24px 60px; }
-    .roles-section { padding: 0 24px 100px; }
+    .job-hero { padding: 140px 24px 32px; }
+    .job-content { padding: 0 24px 100px; }
+    .job-meta-grid { padding: 24px; gap: 20px; }
   }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "JobPosting",
+  "title": "BIM Lead / Founder's Associate",
+  "description": "This is a senior, high-trust role for someone who wants to help build a company, not just run models. As BIM Lead and Founder's Associate you will own technical delivery across Arangath's UK and Indian civil and water infrastructure projects, setting standards, coordinating the team, and acting as the founder's right hand on everything from BEP production to client review. You will be one of the first senior hires, shaping how the delivery operation works as it grows.",
+  "hiringOrganization": {
+    "@type": "Organization",
+    "name": "Arangath Ltd",
+    "sameAs": "https://arangath.co.uk"
+  },
+  "identifier": {
+    "@type": "PropertyValue",
+    "name": "Arangath Ltd",
+    "value": "bim-lead-kochi"
+  },
+  "jobLocation": {
+    "@type": "Place",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Kochi",
+      "addressRegion": "Kerala",
+      "addressCountry": "IN"
+    }
+  },
+  "datePosted": "2026-07-08",
+  "validThrough": "2026-10-06",
+  "employmentType": "FULL_TIME",
+  "experienceRequirements": "6-10 years",
+  "baseSalary": {
+    "@type": "MonetaryAmount",
+    "currency": "INR",
+    "value": {
+      "@type": "QuantitativeValue",
+      "minValue": 900000,
+      "maxValue": 1100000,
+      "unitText": "YEAR"
+    }
+  }
+}
+</script>
 </head>
 <body>
 
@@ -1236,54 +1381,85 @@
   <a href="/#contact" class="nav-cta">Get in touch</a>
 </nav>
 
-<!-- CAREERS HERO -->
-<section class="careers-hero">
-  <div class="hero-label" style="margin-bottom:20px;">Careers</div>
-  <h1>Join our<br><em>delivery team.</em></h1>
-  <p>
-    Arangath is a UK-registered specialist BIM consultancy delivering ISO 19650-compliant coordination, information management and digital delivery for civil and water infrastructure clients. Our client-facing operations are anchored in London; our delivery operation is based in Kochi and Mumbai, India — and we are growing it. Below are our two open roles.
-  </p>
+<!-- JOB HERO -->
+<section class="job-hero">
+  <a href="/careers" class="back-link">&larr; All roles</a>
+  <div class="job-tagline">Kochi, Kerala &middot; Full-time, permanent — senior / founding team</div>
+  <h1>BIM Lead / Founder's Associate</h1>
+  <p style="font-family:var(--serif); font-size:18px; font-weight:300; color:var(--muted); line-height:1.8; max-width:640px;">A senior, high-trust founding-team role — own delivery and help build the company.</p>
 </section>
 
-<!-- ROLES -->
-<section class="roles-section">
-  <div class="section-label teal">Open roles</div>
-  <div class="services-grid" style="grid-template-columns: repeat(2, 1fr);">
+<div class="job-content">
 
-    <a href="/careers/bim-modeller" class="role-card">
-      <div class="service-card">
-        <div class="service-num">01</div>
-        <h3 class="service-title">BIM Modeller (Civil &amp; Infrastructure)</h3>
-        <p class="service-desc">
-          Hands-on modelling on live UK &amp; Indian infrastructure — to international standards. 2–4 years' experience in BIM / Revit / Civil 3D. Kochi, Kerala (on-site / hybrid).
-        </p>
-        <div class="service-tags">
-          <span class="tag">Revit</span>
-          <span class="tag">Civil 3D</span>
-          <span class="tag">Navisworks</span>
-          <span class="tag">₹4.5–7.0 LPA</span>
-        </div>
-      </div>
-    </a>
-
-    <a href="/careers/bim-lead" class="role-card">
-      <div class="service-card">
-        <div class="service-num" style="color:var(--teal)">02</div>
-        <h3 class="service-title">BIM Lead / Founder's Associate</h3>
-        <p class="service-desc">
-          A senior, high-trust founding-team role — own delivery and help build the company. 6–10 years' experience. Kochi, Kerala (on-site, with UK-hours overlap).
-        </p>
-        <div class="service-tags">
-          <span class="tag">Leadership</span>
-          <span class="tag">BEP / EIR</span>
-          <span class="tag">CDE Admin</span>
-          <span class="tag">₹9–11 LPA + Bonus</span>
-        </div>
-      </div>
-    </a>
-
+  <div class="job-meta-grid">
+    <div class="job-meta-item"><span class="form-label">Location</span><div class="job-meta-val">Kochi, Kerala (on-site / hybrid)</div></div>
+    <div class="job-meta-item"><span class="form-label">Type</span><div class="job-meta-val">Full-time, permanent — senior / founding team</div></div>
+    <div class="job-meta-item"><span class="form-label">Experience</span><div class="job-meta-val">6–10 years in BIM, incl. coordination &amp; delivery</div></div>
+    <div class="job-meta-item"><span class="form-label">Reports to</span><div class="job-meta-val">Founder / Director</div></div>
+    <div class="job-meta-item"><span class="form-label">Salary band</span><div class="job-meta-val">₹9 – 11 LPA <span style="color:var(--very-muted); font-size:13px;">+ performance bonus</span></div></div>
   </div>
-</section>
+
+  <div class="jd-section">
+    <h2>About Arangath</h2>
+    <p>Arangath is a UK-registered specialist BIM consultancy delivering ISO 19650-compliant coordination, information management and digital delivery for civil and water infrastructure clients. Our delivery operation is based in India (Kochi and Mumbai) and our client-facing operation is anchored in London. We serve contractors and developers in the UK — including across the AMP8 investment cycle — and in India.</p>
+  </div>
+
+  <div class="jd-section">
+    <h2>About the role</h2>
+    <p>This is a senior, high-trust role for someone who wants to help build a company, not just run models. As BIM Lead and Founder's Associate you will own technical delivery across Arangath's UK and Indian civil and water infrastructure projects — setting standards, coordinating the team, and acting as the founder's right hand on everything from BEP production to client review. You will be one of the first senior hires, shaping how the delivery operation works as it grows. It suits an experienced BIM Coordinator / Manager ready to step up into leadership and take ownership of quality, process and people.</p>
+  </div>
+
+  <div class="jd-section">
+    <h2>Key responsibilities</h2>
+    <ul class="jd-list">
+      <li>Own end-to-end BIM delivery on UK and Indian civil, water and infrastructure projects, to ISO 19650 Parts 1 &amp; 2.</li>
+      <li>Produce project BIM Execution Plans in response to Employer's Information Requirements (EIRs), and lead data-drop planning.</li>
+      <li>Set up and administer Common Data Environments (ACC / BIM360 / ProjectWise) and enforce standards, naming and QA/QC.</li>
+      <li>Lead federated model coordination and Navisworks clash detection; run coordination reviews and resolution workflows.</li>
+      <li>Manage, mentor and quality-check BIM modellers; allocate work and safeguard delivery timelines.</li>
+      <li>Interface directly with UK clients and the London team — scoping calls, technical queries, review comments and AIM handover.</li>
+      <li>Support 4D sequencing (Synchro) and digital-delivery consultancy for Tier 2 contractors entering AMP8 frameworks.</li>
+      <li>As Founder's Associate: contribute to hiring, delivery process, tooling decisions, estimating / scoping and the growth of the Kochi operation.</li>
+    </ul>
+  </div>
+
+  <div class="jd-section">
+    <h2>Essential skills &amp; experience</h2>
+    <ul class="jd-list">
+      <li>6–10 years in BIM with demonstrable coordination / lead / management responsibility.</li>
+      <li>Deep proficiency across Revit, Civil 3D and Navisworks Manage; command of CDE administration.</li>
+      <li>Proven experience producing BEPs and delivering to defined LOD and information-management standards.</li>
+      <li>Strong leadership, mentoring and QA/QC discipline; able to run a delivery team to milestones.</li>
+      <li>Excellent English communication and confidence dealing directly with clients.</li>
+      <li>Bachelor's / Diploma in Civil, Structural, Mechanical or related engineering discipline.</li>
+    </ul>
+  </div>
+
+  <div class="jd-section">
+    <h2>Desirable <span style="color:var(--very-muted); font-weight:300; font-size:0.6em; text-transform:none; letter-spacing:0;">(a strong advantage)</span></h2>
+    <ul class="jd-list">
+      <li>Direct experience on water / wastewater infrastructure (treatment works, pumping stations, networks, reservoirs).</li>
+      <li>Hands-on ISO 19650 / UK BIM Framework delivery, ideally for UK utility clients or their contractors.</li>
+      <li>Synchro 4D sequencing, Dynamo automation, or Scan to BIM leadership.</li>
+      <li>Experience standing up BIM workflows / teams from scratch in a growing consultancy.</li>
+    </ul>
+  </div>
+
+  <div class="jd-section">
+    <h2>What we offer</h2>
+    <ul class="jd-list">
+      <li>A genuine founding-team role with influence over how the company is built.</li>
+      <li>Performance bonus tied to delivery and company growth, on top of a competitive base salary.</li>
+      <li>Direct access to the founder and the London client operation, and a clear path to Delivery Head / BIM Manager as the team scales.</li>
+    </ul>
+  </div>
+
+  <div class="apply-band">
+    <a class="apply-cta" href="mailto:hello@arangath.co.uk?subject=Application%3A%20BIM%20Lead%20%2F%20Founder%27s%20Associate%20%E2%80%94%20Kochi">Apply for this role &rarr;</a>
+    <p class="apply-fallback">No mail app open? Email your application directly to <a href="mailto:hello@arangath.co.uk">hello@arangath.co.uk</a>.</p>
+  </div>
+
+</div>
 
 <!-- FOOTER -->
 <footer>
