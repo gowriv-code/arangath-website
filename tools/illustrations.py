@@ -546,69 +546,94 @@ def house(s, x, y):
 
 
 def rural_water_supply():
+    """Jal Jeevan Mission scheme as described on the project page: tube wells, treatment, pumping station,
+    elevated service reservoirs on columns, underground distribution mains, household connections."""
     s = S()
     with s.g("structure"):
-        s.ground(-6, -4, 54, 36, step=4)
-    with s.g("structure", tip="Source (river or well)", key="source"):
-        s.poly([(-6, -4, 0.01), (5, -4, 0.01), (1, 36, 0.01), (-6, 36, 0.01)], WAT, stroke="none", op=0.8)
-    with s.g("structure", tip="Intake", key="intake"):
-        s.cyl(3, 10, -0.5, 1.6, 3.2, top="#C9D3DD")
-    s.label(-5, 6, 4.2, "Intake well", color="#DDE4EB", size=1.4)
-    # elevated service reservoir (drawn early: it sits behind)
-    cx, cy = 40, 4
-    with s.g("structure", tip="Elevated service reservoir on columns", key="reservoir"):
-        for dx, dy in ((-1.8, -1.8), (1.8, -1.8), (-1.8, 1.8), (1.8, 1.8)):
-            s.line([(cx + dx, cy + dy, 0), (cx + dx * 0.8, cy + dy * 0.8, 10)], "#A8B5C3", 0.35)
-        s.line([(cx - 1.6, cy - 1.6, 5), (cx + 1.6, cy - 1.6, 5), (cx + 1.6, cy + 1.6, 5)], "#8997A7", 0.15)
-    s.pipe([(cx, cy + 2, 0.8), (cx, cy, 0.8), (cx, cy, 10)], P_RAW, w=0.35)
-    with s.g("structure", tip="Elevated service reservoir on columns", key="reservoir-tank"):
-        s.cyl(cx, cy, 10, 3.2, 3.2)
-    s.label(cx + 4, cy - 3, 13.8, "Service reservoir", color="#DDE4EB", size=1.4)
-    # treatment unit
-    s.pipe([(4.6, 10, 1.0), (10, 10, 1.0), (10, 13, 1.0)], P_RAW, w=0.45, tip="Raw water pipe", key="raw-main")
+        s.ground(-6, -4, 56, 40, step=4)
+    # tube wells -> collector -> treatment unit
+    s.pipe([(3, 4, 0.5), (6, 4, 0.5), (6, 16, 0.5), (10, 16, 0.5)], P_RAW, w=0.35, tip="Raw water collector", key="collector")
+    s.pipe([(3, 10, 0.5), (6, 10, 0.5)], P_RAW, w=0.35)
+    s.pipe([(3, 16, 0.5), (6, 16, 0.5)], P_RAW, w=0.35)
+    for k, ty in enumerate((4, 10, 16)):
+        with s.g("structure", tip="Tube well" if k == 0 else None, key="tubewell" if k == 0 else None):
+            s.cyl(3, ty, 0, 0.6, 2.4, top="#C9D3DD")
+        with s.g("equipment", tip="Tube well pump" if k == 0 else None, key="tw-pump" if k == 0 else None):
+            s.box(2.4, ty - 0.5, 2.4, 1.2, 1.0, 0.8, t="#E3D26F", l="#A89A45", r="#C7B757", sw=0.04)
+    s.label(0, 19, 2.6, "Tube wells", color="#DDE4EB", size=1.4, anchor="end")
+    # elevated service reservoirs (far side, drawn early)
+    for n, cx in enumerate((34, 46)):
+        cy = 4
+        with s.g("structure", tip="Elevated service reservoir on columns" if n == 0 else None, key="reservoir" if n == 0 else None):
+            for dx, dy in ((-1.8, -1.8), (1.8, -1.8), (-1.8, 1.8), (1.8, 1.8)):
+                s.line([(cx + dx, cy + dy, 0), (cx + dx * 0.8, cy + dy * 0.8, 10)], "#A8B5C3", 0.35)
+            s.line([(cx - 1.6, cy - 1.6, 5), (cx + 1.6, cy - 1.6, 5), (cx + 1.6, cy + 1.6, 5)], "#8997A7", 0.15)
+        s.pipe([(cx, cy + 2, 0.8), (cx, cy, 0.8), (cx, cy, 10)], P_RAW, w=0.35)
+        with s.g("structure", tip="Elevated service reservoir on columns" if n == 0 else None, key="reservoir-tank" if n == 0 else None):
+            s.cyl(cx, cy, 10, 3.0, 3.0)
+    s.label(28, 0, 13.6, "Elevated service reservoirs", color="#DDE4EB", size=1.4)
+    # treatment unit and pumping station
     with s.g("structure", tip="Treatment unit", key="treatment"):
         s.tank(10, 13, 0, 8, 6, 2.6, t=0.4, water=0.5, cells=2)
         s.box(10, 19.5, 0, 4, 3, 2.6, t=BLD_T, l=BLD_L, r=BLD_R)
-    s.label(10, 11, 3.4, "Treatment unit", color="#DDE4EB", size=1.4)
-    # pumping main to reservoir
-    s.pipe([(18, 16, 1.0), (40, 16, 1.0), (40, 6, 0.8)], P_RAW, w=0.45, valves=[(28, 16, 1.0)], tip="Rising main to the reservoir", key="rising-main")
-    # distribution mains + houses
-    s.pipe([(42, 6, 0.3), (46, 6, 0.3), (46, 34, 0.3)], "#34C17F", w=0.35, tip="Distribution main", key="dist-main")
-    s.pipe([(24, 24, 0.3), (46, 24, 0.3)], "#34C17F", w=0.35)
-    s.pipe([(24, 32, 0.3), (46, 32, 0.3)], "#34C17F", w=0.35)
-    for hx, hy, my in ((26, 26, 24), (31, 26, 24), (36, 26, 24), (26, 33.5, 32), (31, 33.5, 32), (36, 33.5, 32)):
-        with s.g("structure", tip="Household" if (hx, hy) == (26, 26) else None, key="household" if (hx, hy) == (26, 26) else None):
-            house(s, hx, hy)
-        with s.g("pipework"):
-            s.line([(hx + 1.2, my, 0.3), (hx + 1.2, hy, 0.3)], "#34C17F", 0.15)
-        with s.g("equipment", tip="Household tap connection" if (hx, hy) == (26, 26) else None, key="tap" if (hx, hy) == (26, 26) else None):
-            (px, py) = P(hx + 1.2, hy, 0.5)
-            s.el.append(f'<circle cx="{px:.2f}" cy="{py:.2f}" r="0.45" fill="#8FD0F2" stroke="#0D1319" stroke-width="0.08"></circle>')
-    s.label(40, 38, 0.3, "Household tap connections", color="#DDE4EB", size=1.4)
+    s.label(12, 25, 0, "Treatment unit", color="#DDE4EB", size=1.4, anchor="end")
+    s.pipe([(18, 16, 1.0), (22, 16, 1.0)], P_RAW, w=0.45)
+    with s.g("structure", tip="Pumping station", key="pumpstation"):
+        s.building(22, 13, 0, 6, 5, 3.4)
+    s.label(21, 11, 4.4, "Pumping station", color="#DDE4EB", size=1.4)
+    s.pipe([(28, 16, 1.0), (34, 16, 1.0), (34, 6, 0.8)], P_RAW, w=0.45, valves=[(31, 16, 1.0)], tip="Rising main to the reservoirs", key="rising-main")
+    s.pipe([(34, 16, 1.0), (46, 16, 1.0), (46, 6, 0.8)], P_RAW, w=0.45)
+    # underground distribution mains
+    s.pipe([(34, 6, 0.3), (34, 8, 0.3), (52, 8, 0.3)], "#34C17F", w=0.35)
+    s.pipe([(46, 6, 0.3), (46, 8, 0.3)], "#34C17F", w=0.35)
+    s.pipe([(52, 8, 0.3), (52, 37, 0.3)], "#34C17F", w=0.4, tip="Underground distribution main", key="dist-main")
+    s.pipe([(22, 24, 0.3), (52, 24, 0.3)], "#34C17F", w=0.35)
+    s.pipe([(22, 32, 0.3), (52, 32, 0.3)], "#34C17F", w=0.35)
+    # households along the mains, drawn back to front
+    first = True
+    for hy, my in ((21, 24), (26, 24), (34, 32)):
+        for hx in (24, 29, 34, 39, 44):
+            with s.g("structure", tip="Household" if first else None, key="household" if first else None):
+                house(s, hx, hy)
+            with s.g("pipework"):
+                if hy < my:
+                    s.line([(hx + 1.2, my, 0.3), (hx + 1.2, hy + 2.0, 0.3)], "#34C17F", 0.15)
+                else:
+                    s.line([(hx + 1.2, my, 0.3), (hx + 1.2, hy, 0.3)], "#34C17F", 0.15)
+            with s.g("equipment", tip="Household tap connection" if first else None, key="tap" if first else None):
+                (px, py) = P(hx + 1.2, hy if hy > my else hy + 2.0, 0.5)
+                s.el.append(f'<circle cx="{px:.2f}" cy="{py:.2f}" r="0.45" fill="#8FD0F2" stroke="#0D1319" stroke-width="0.08"></circle>')
+            first = False
+    s.label(21, 39, 0.3, "Household tap connections", color="#DDE4EB", size=1.4, anchor="end")
+    s.label(54, 26, 0.3, "Underground mains", color="#DDE4EB", size=1.4)
     return s
 
 
 def wtp_100mld():
+    """100 MLD works as described on the project page: raw water source, cascade aerator, three circular
+    settling tanks, 24 filter beds, disinfection, pumping to the city through a trunk main."""
     s = S()
     with s.g("structure"):
-        s.ground(-4, -4, 92, 58, step=6)
+        s.ground(-4, -4, 100, 60, step=6)
         # internal road
-        s.poly([(-4, 26, 0.01), (92, 26, 0.01), (92, 30, 0.01), (-4, 30, 0.01)], "#2A3746", stroke="none")
-        s.line([(-4, 28, 0.02), (92, 28, 0.02)], "#8997A7", 0.12, dash="1.4 1.2", cap="butt")
+        s.poly([(-4, 26, 0.01), (100, 26, 0.01), (100, 30, 0.01), (-4, 30, 0.01)], "#2A3746", stroke="none")
+        s.line([(-4, 28, 0.02), (100, 28, 0.02)], "#8997A7", 0.12, dash="1.4 1.2", cap="butt")
+    with s.g("structure", tip="Raw water source", key="source"):
+        s.poly([(-4, 4, 0.02), (-1, 4, 0.02), (-1, 20, 0.02), (-4, 20, 0.02)], WAT, stroke="none", op=0.85)
     # inlet + cascade aerator
     with s.g("structure", tip="Inlet and cascade aerator", key="inlet"):
         s.box(0, 8, 0, 6, 6, 3.2)
         for k in range(4):
             s.box(0.5 + k * 1.2, 8.5 + k * 1.2, 3.2, 5 - k * 1.2, 5 - k * 1.2, 0.6, sw=0.05)
     s.pipe([(6, 11, 2.0), (9, 11, 2.0), (9, 4, 2.0)], P_RAW, w=0.7, tip="Raw water main", key="raw-main")
-    # clarifiers
+    # three circular settling tanks
     for i, cxy in enumerate(((16, 4), (16, 17), (30, 10))):
-        s.clarifier(cxy[0], cxy[1], 6.5, 4.0, rails=False, tip="Clarifier" if i == 0 else None, key="clarifier" if i == 0 else None)
+        s.clarifier(cxy[0], cxy[1], 6.5, 4.0, rails=False, tip="Circular settling tank" if i == 0 else None, key="clarifier" if i == 0 else None)
     s.pipe([(9, 4, 2.0), (9.5, 4, 2.0)], P_RAW, w=0.7)
-    # filter house: 2 rows x 5 cells
-    with s.g("structure", tip="Filter house (10 cells)", key="filters"):
-        s.tank(42, 0, 0, 30, 9, 5.5, t=0.6, water=1.0, cells=5)
-        s.tank(42, 13, 0, 30, 9, 5.5, t=0.6, water=1.0, cells=5)
+    # filter house: 24 filter beds = 2 rows x 12
+    with s.g("structure", tip="Filter house (24 filter beds)", key="filters"):
+        s.tank(42, 0, 0, 30, 9, 5.5, t=0.45, water=1.0, cells=12)
+        s.tank(42, 13, 0, 30, 9, 5.5, t=0.45, water=1.0, cells=12)
         s.poly([(42, 9, 0), (72, 9, 0), (72, 13, 0), (42, 13, 0)], "#2A3848", sw=0.05)
     s.pipe([(42, 11, 2.2), (72, 11, 2.2)], P_RAW, w=0.8, tip="Filtered water channel", key="filtered")
     s.pipe([(42, 12, 3.2), (72, 12, 3.2)], P_AIR, w=0.5, tip="Air scour pipe", key="air")
@@ -622,14 +647,20 @@ def wtp_100mld():
     with s.g("structure", tip="Pump house", key="pumphouse"):
         s.building(78, 34, 0, 12, 8, 6)
     s.pipe([(84, 22, 1.5), (84, 34, 1.5)], P_RAW, w=0.8, valves=[(84, 30, 1.5)], tip="Outlet to the pump house", key="outlet")
-    # chemical house, admin
-    with s.g("structure", tip="Chemical house", key="chem"):
+    # pump sets and the new trunk main to the city
+    for k, px in enumerate((80, 85, 90)):
+        with s.g("equipment", tip="Pump set" if k == 0 else None, key="pumps" if k == 0 else None):
+            s.cyl(px, 45, 0, 1.0, 1.8, side="#B8C4D0", side2="#7D8B9B", top="#D8E0E8", sw=0.06)
+        s.pipe([(px, 46.2, 0.8), (px, 49, 0.8)], P_RAW, w=0.4)
+    s.pipe([(80, 49, 0.8), (98, 49, 0.8), (98, 59, 0.8)], P_RAW, w=0.8, tip="Trunk main to the city", key="trunk")
+    # chemical house (disinfection), admin
+    with s.g("structure", tip="Chemical house (disinfection)", key="chem"):
         s.building(40, 36, 0, 14, 9, 5)
     with s.g("structure"):
         s.building(4, 36, 0, 12, 8, 7)
-    s.pipe([(47, 36, 1.0), (47, 22, 1.0)], P_DOSE, w=0.3, tip="Chemical dosing line", key="dosing")
-    for lbl, x, y, z in (("Clarifiers x3", 14, -3, 5), ("Filter house, 10 cells", 50, -2, 6), ("Clear water reservoir", 78, -2, 3.4), ("Pump house", 80, 45, 6.2), ("Chemical house", 42, 48, 5.2), ("Admin", 5, 47, 7.2)):
-        s.label(x, y, z, lbl, color="#DDE4EB", size=2.6)
+    s.pipe([(47, 36, 1.0), (47, 22, 1.0)], P_DOSE, w=0.3, tip="Disinfectant dosing line", key="dosing")
+    for lbl, x, y, z, anc in (("Source", -4, 22, 0.4, "end"), ("Cascade aerator", -1, 15, 4, "end"), ("Settling tanks x3", 14, -3, 5, "start"), ("Filter house, 24 beds", 50, -2, 6, "start"), ("Clear water reservoir", 78, -2, 3.4, "start"), ("Pump house", 77, 44, 1, "end"), ("Trunk main to city", 102, 52, 0, "start"), ("Chemical house", 40, 50, 0, "end"), ("Admin", 5, 47, 7.2, "start")):
+        s.label(x, y, z, lbl, color="#DDE4EB", size=2.6, anchor=anc)
     return s
 
 

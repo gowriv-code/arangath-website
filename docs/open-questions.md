@@ -13,13 +13,13 @@
 - Design consulting service line: the old site did not list it. The three cards (Design review, Design coordination, Constructability input) are my draft. Is this scope right?
 
 ## Decisions I made that you may want to change
-- Careers pages are ported into the new design with their text unchanged, except: ACC/BIM360/ProjectWise and Synchro/4D mentions removed (brief: tools not in use). **Still in the job ads:** "Kochi and Mumbai" (the brief lists Kochi as the only India office) and "AMP8" in body text. Left as-is because they are factual statements about the roles, not headings. Tell me if you want them changed.
+- Careers pages are ported into the new design. Changes from the old text: ACC/BIM360/ProjectWise and Synchro/4D mentions removed; Mumbai removed (Kochi only); BIM Lead is now "on-site / hybrid"; "UK-hours overlap" removed. "AMP8" remains in job-ad body text (not in any heading or button).
 - Blog category chips are hidden while there are no posts (they would do nothing). They appear with the first published post.
 - "About" in the nav links to the "Why Arangath" section on the home page.
 - Featured card (BEP Starter Pack) has the tag "Entry offer" and a green "Ask about this" button linking to the contact form.
 - Detail-page "What you receive" says "native and IFC formats" and "drawings and schedules": confirm these deliverables.
 - `treatment-works-plain.svg` is a no-callout version of the hero drawing, generated from `tools/illustrations.py` (with labels off) for the detail page, since only the home hero should carry the clash callout.
-- Default Open Graph image for non-post pages is the logo mark; a proper social card would be better.
+- Default social card (1200x630) for all non-post pages is `assets/social/og-default.png`, made from `tools/social/card.html`. Re-render it with headless Chrome if the headline changes.
 
 ## Before merging to main
 - Complete the one-time GitHub OAuth setup in `docs/publishing-a-blog-post.md` so /admin works. I could not test /admin sign-in from here.

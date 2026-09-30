@@ -25,7 +25,7 @@ EMAIL = "hello@arangath.co.uk"
 LINKEDIN = "https://www.linkedin.com/company/arangath/"
 LEGAL = "© 2026 Arangath Ltd · Registered in England and Wales, company no. 17202121 · Registered office: 66 Paul Street, London EC2A 4NA"
 MAPS = "https://www.google.com/maps/search/?api=1&query=X82J%2BC7W%20Kochi%20Kerala"
-DEFAULT_OG = "/assets/logo/arangath-mark-dark-bg-1024.png"
+DEFAULT_OG = "/assets/social/og-default.png"  # 1200x630; source: tools/social/card.html
 INCLUDE_DRAFTS = os.environ.get("INCLUDE_DRAFTS") == "1"
 
 CATEGORIES = ["Design consulting", "Information management", "BIM and coordination", "Digital delivery", "Company news"]
@@ -217,6 +217,7 @@ def page(title, desc, body, path, current="", og_image=None, og_type="website", 
 <meta property="og:description" content="{e(desc)}">
 <meta property="og:url" content="{canonical}">
 <meta property="og:image" content="{img}">
+{"<meta property=og:image:width content=1200><meta property=og:image:height content=630>" if img.endswith("og-default.png") else ""}
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{e(title)}">
 <meta name="twitter:description" content="{e(desc)}">
