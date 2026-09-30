@@ -1,0 +1,2 @@
+Export the three artboards (Home, Services, Service detail) from the Arangath Website Redesign canvas
+(Share > Export, as PNG or PDF) and save them in this folder before handing the pack to Claude Code.

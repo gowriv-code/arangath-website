@@ -1,0 +1,99 @@
+<svg viewBox="0 0 560 280" width="1120" height="560" role="img" xmlns="http://www.w3.org/2000/svg">
+            <rect width="560" height="280" fill="#070F18"/>
+            <!-- Grid -->
+            <line x1="0" y1="140" x2="560" y2="140" stroke="rgba(74,170,210,0.05)" stroke-width="0.5"/>
+            <line x1="280" y1="0" x2="280" y2="280" stroke="rgba(74,170,210,0.05)" stroke-width="0.5"/>
+
+            <!-- Ground plane -->
+            <rect x="0" y="245" width="560" height="35" fill="#06111C"/>
+            <line x1="0" y1="245" x2="560" y2="245" stroke="rgba(61,201,160,0.12)" stroke-width="0.5"/>
+
+            <!-- Inlet works / screening -->
+            <rect x="20" y="160" width="55" height="80" fill="#0C1E30" stroke="#4AAAD2" stroke-width="0.8"/>
+            <text x="47" y="195" font-family="'DM Mono', monospace" font-size="7" fill="rgba(74,170,210,0.65)" text-anchor="middle">INLET</text>
+            <text x="47" y="205" font-family="'DM Mono', monospace" font-size="7" fill="rgba(74,170,210,0.65)" text-anchor="middle">WORKS</text>
+            <!-- Screen lines -->
+            <line x1="28" y1="168" x2="28" y2="235" stroke="rgba(74,170,210,0.3)" stroke-width="0.6"/>
+            <line x1="36" y1="168" x2="36" y2="235" stroke="rgba(74,170,210,0.3)" stroke-width="0.6"/>
+            <line x1="44" y1="168" x2="44" y2="235" stroke="rgba(74,170,210,0.3)" stroke-width="0.6"/>
+            <line x1="52" y1="168" x2="52" y2="235" stroke="rgba(74,170,210,0.3)" stroke-width="0.6"/>
+            <line x1="60" y1="168" x2="60" y2="235" stroke="rgba(74,170,210,0.3)" stroke-width="0.6"/>
+            <line x1="68" y1="168" x2="68" y2="235" stroke="rgba(74,170,210,0.3)" stroke-width="0.6"/>
+
+            <!-- Flow pipe between units -->
+            <rect x="75" y="193" width="30" height="10" fill="#0D2235" stroke="#4AAAD2" stroke-width="0.8"/>
+            <polygon points="90,196 100,198 90,200" fill="rgba(74,170,210,0.5)"/>
+
+            <!-- Sedimentation / Clarifier tanks — circular plan shown as ellipses -->
+            <ellipse cx="150" cy="195" rx="40" ry="25" fill="#0C1E30" stroke="#4AAAD2" stroke-width="0.8"/>
+            <ellipse cx="150" cy="195" rx="28" ry="17" fill="#091828" stroke="rgba(74,170,210,0.3)" stroke-width="0.5"/>
+            <line x1="150" y1="170" x2="150" y2="220" stroke="rgba(74,170,210,0.2)" stroke-width="0.5"/>
+            <line x1="110" y1="195" x2="190" y2="195" stroke="rgba(74,170,210,0.2)" stroke-width="0.5"/>
+            <text x="150" y="198" font-family="'DM Mono', monospace" font-size="6.5" fill="rgba(74,170,210,0.6)" text-anchor="middle">CLARIFIER</text>
+
+            <!-- Second clarifier -->
+            <ellipse cx="250" cy="195" rx="40" ry="25" fill="#0C1E30" stroke="#4AAAD2" stroke-width="0.8"/>
+            <ellipse cx="250" cy="195" rx="28" ry="17" fill="#091828" stroke="rgba(74,170,210,0.3)" stroke-width="0.5"/>
+            <line x1="250" y1="170" x2="250" y2="220" stroke="rgba(74,170,210,0.2)" stroke-width="0.5"/>
+            <line x1="210" y1="195" x2="290" y2="195" stroke="rgba(74,170,210,0.2)" stroke-width="0.5"/>
+            <text x="250" y="198" font-family="'DM Mono', monospace" font-size="6.5" fill="rgba(74,170,210,0.6)" text-anchor="middle">CLARIFIER</text>
+
+            <!-- Connecting pipe -->
+            <rect x="190" y="190" width="20" height="10" fill="#0D2235" stroke="#4AAAD2" stroke-width="0.6"/>
+
+            <!-- Aeration / Filter beds -->
+            <rect x="305" y="165" width="75" height="60" fill="#0C1E30" stroke="#3DC9A0" stroke-width="0.8"/>
+            <text x="342" y="190" font-family="'DM Mono', monospace" font-size="7" fill="rgba(61,201,160,0.65)" text-anchor="middle">FILTER</text>
+            <text x="342" y="200" font-family="'DM Mono', monospace" font-size="7" fill="rgba(61,201,160,0.65)" text-anchor="middle">BEDS</text>
+            <!-- Filter media lines -->
+            <line x1="313" y1="178" x2="372" y2="178" stroke="rgba(61,201,160,0.25)" stroke-width="0.6"/>
+            <line x1="313" y1="186" x2="372" y2="186" stroke="rgba(61,201,160,0.25)" stroke-width="0.6"/>
+            <line x1="313" y1="194" x2="372" y2="194" stroke="rgba(61,201,160,0.25)" stroke-width="0.6"/>
+            <line x1="313" y1="202" x2="372" y2="202" stroke="rgba(61,201,160,0.25)" stroke-width="0.6"/>
+            <line x1="313" y1="210" x2="372" y2="210" stroke="rgba(61,201,160,0.25)" stroke-width="0.6"/>
+            <!-- Connect pipe -->
+            <rect x="290" y="190" width="15" height="10" fill="#0D2235" stroke="#3DC9A0" stroke-width="0.6"/>
+
+            <!-- Clear water reservoir -->
+            <rect x="400" y="155" width="80" height="90" fill="#091828" stroke="#3DC9A0" stroke-width="1"/>
+            <text x="440" y="196" font-family="'DM Mono', monospace" font-size="7" fill="rgba(61,201,160,0.65)" text-anchor="middle">CLEAR</text>
+            <text x="440" y="206" font-family="'DM Mono', monospace" font-size="7" fill="rgba(61,201,160,0.65)" text-anchor="middle">WATER</text>
+            <text x="440" y="216" font-family="'DM Mono', monospace" font-size="7" fill="rgba(61,201,160,0.65)" text-anchor="middle">SUMP</text>
+            <!-- Water level indicator -->
+            <rect x="402" y="200" width="76" height="43" fill="rgba(61,201,160,0.05)"/>
+            <line x1="402" y1="200" x2="478" y2="200" stroke="rgba(61,201,160,0.3)" stroke-width="0.8"/>
+            <!-- Connect pipe -->
+            <rect x="380" y="190" width="20" height="10" fill="#0D2235" stroke="#3DC9A0" stroke-width="0.6"/>
+
+            <!-- Chemical dosing — overhead -->
+            <rect x="100" y="90" width="30" height="50" fill="#0C1E30" stroke="rgba(255,180,50,0.5)" stroke-width="0.8"/>
+            <text x="115" y="112" font-family="'DM Mono', monospace" font-size="6" fill="rgba(255,180,50,0.6)" text-anchor="middle">DOSE</text>
+            <line x1="115" y1="140" x2="150" y2="170" stroke="rgba(255,180,50,0.35)" stroke-width="0.8" stroke-dasharray="3,2"/>
+
+            <!-- Sludge handling -->
+            <ellipse cx="180" cy="100" rx="25" ry="16" fill="#0C1E30" stroke="rgba(200,150,50,0.4)" stroke-width="0.8"/>
+            <text x="180" y="103" font-family="'DM Mono', monospace" font-size="6" fill="rgba(200,150,50,0.55)" text-anchor="middle">SLUDGE</text>
+            <line x1="155" y1="195" x2="180" y2="116" stroke="rgba(200,150,50,0.3)" stroke-width="0.8" stroke-dasharray="3,2"/>
+
+            <!-- Clash marker -->
+            <circle cx="305" cy="190" r="6" fill="rgba(61,201,160,0.12)" stroke="#3DC9A0" stroke-width="1" stroke-dasharray="2,2"/>
+            <text x="316" y="155" font-family="'DM Mono', monospace" font-size="6.5" fill="#3DC9A0">COORD</text>
+
+            <!-- Capacity annotation -->
+            <rect x="14" y="54" width="100" height="36" fill="rgba(7,15,24,0.85)" stroke="rgba(74,170,210,0.2)" stroke-width="0.5"/>
+            <text x="22" y="68" font-family="'DM Mono', monospace" font-size="7" fill="rgba(74,170,210,0.55)">DESIGN CAPACITY</text>
+            <text x="22" y="82" font-family="'DM Mono', monospace" font-size="14" fill="#4AAAD2">100 MLD</text>
+
+            <!-- Layer legend -->
+            <g transform="translate(430, 14)">
+              <rect x="0" y="0" width="8" height="5" fill="#4AAAD2" opacity="0.7"/>
+              <text x="12" y="5" font-family="'DM Mono', monospace" font-size="7" fill="rgba(74,170,210,0.7)">PROCESS</text>
+              <rect x="0" y="10" width="8" height="5" fill="#3DC9A0" opacity="0.7"/>
+              <text x="12" y="15" font-family="'DM Mono', monospace" font-size="7" fill="rgba(61,201,160,0.7)">CIVIL</text>
+              <rect x="0" y="20" width="8" height="5" fill="rgba(255,180,50,0.6)"/>
+              <text x="12" y="25" font-family="'DM Mono', monospace" font-size="7" fill="rgba(255,180,50,0.6)">MEICA</text>
+            </g>
+
+            <text x="14" y="268" font-family="'DM Mono', monospace" font-size="8" fill="rgba(74,170,210,0.4)" letter-spacing="0.1em">PLAN — PROCESS LAYOUT</text>
+            <text x="14" y="278" font-family="'DM Mono', monospace" font-size="7" fill="rgba(200,225,248,0.2)" letter-spacing="0.08em">LOD 350 · ISO 19650</text>
+          </svg>
