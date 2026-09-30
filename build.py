@@ -120,12 +120,12 @@ PROJECTS = [
     {
         "slug": "chamravattom-bridge", "title": "Chamravattom Bridge", "loc": "Malappuram, Kerala", "static": "chamravattom-bridge",
         "chips": ["978 m", "70 sluice gates", "Road and irrigation"],
-        "sentence": "A regulator-cum-bridge across the Bharathapuzha that carries road traffic and controls river flow.",
+        "sentence": "A regulator-cum-bridge across the Bharathapuzha River that carries road traffic and controls river flow.",
         "desc": "One of Kerala's longest bridges at nearly a kilometre, built across the Bharathapuzha river in southern India. It carries road traffic while controlling the flow of water through 70 sluice gates — a dual-purpose design that cuts the driving distance between two of Kerala's major cities by 38km and irrigates thousands of hectares of farmland. A complex civil and hydraulic engineering contract requiring precise coordination between road, bridge and water management systems.",
         "facts": [("Location", "Malappuram, Kerala"), ("Length", "978 m"), ("Sluice gates", "70"), ("Type", "Civil · hydraulic")],
         "model": ill.regulator_bridge, "layers": [("structure", "Structure"), ("equipment", "Equipment"), ("water", "Water")],
         "legacy": "chamravattom-bridge-bim",
-        "meta": "Chamravattom Bridge, Kerala: a 978 m regulator-cum-bridge with 70 sluice gates across the Bharathapuzha, with an interactive illustrative model.",
+        "meta": "Chamravattom Bridge, Kerala: a 978 m regulator-cum-bridge with 70 sluice gates across the Bharathapuzha River, with an interactive illustrative model.",
     },
     {
         "slug": "kollam-rural-water-supply", "title": "Rural Water Supply, Kollam", "loc": "Kollam, Kerala", "static": "kollam-rural-water-supply",
