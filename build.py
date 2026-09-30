@@ -329,7 +329,7 @@ def project_card_home(p):
 def home():
     svc_cards = ""
     for s in SERVICES:
-        cta = ""  # no "Learn more" links until service detail pages are ready to be linked
+        cta = f'<div class="card-cta"><a class="link" href="{s["detail"]}">Learn more <span aria-hidden="true">→</span></a></div>' if s.get("detail") else ""  # only where a detail page exists
         svc_cards += f'''<article class="card service-home"><div class="pic">{img(s["home_img"], ALT[s["home_img"]])}</div><div class="body">{icon(s["icon"])}<h3>{e(s["title"])}</h3><p>{e(s["sentence"])}</p>{cta}</div></article>'''
     why = [("Built on engineering", "Advice grounded in 25 years of water and civil contracting, not a software background."),
            ("Standards-led", "ISO 19650 and the UK BIM Framework, interpreted carefully and applied consistently."),
@@ -380,7 +380,7 @@ def services_page():
             btn = '<a class="btn btn-outline" href="/#contact">Talk to us</a>'
         cards = ""
         for c in s["cards"]:
-            cards += service_card(c)
+            cards += service_card(c, link=s.get("detail"))  # "Learn more" only where a detail page exists
         groups += f'''<section class="svc-group" id="{s["slug"]}">
 <div class="banner{flip}" style="background:{s["color"]}"><div class="panel" style="background:{s["color"]}"><h2>{e(s["title"])}</h2><p>{e(s["banner"])}</p>{btn}</div>{img(s["banner_img"], ALT[s["banner_img"]])}</div>
 <div class="grid grid-3">{cards}</div></section>'''
