@@ -363,7 +363,7 @@ def home():
         svc_cards += f'''<article class="card service-home"><div class="pic">{img(s["home_img"], ALT[s["home_img"]])}</div><div class="body">{icon(s["icon"])}<h3>{e(s["title"])}</h3><p>{e(s["sentence"])}</p>{cta}</div></article>'''
     why = [("Built on engineering", "Advice grounded in 25 years of water and civil contracting, not a software background."),
            ("Standards-led", "ISO 19650 and the UK BIM Framework, interpreted carefully and applied consistently."),
-           ("Efficient delivery", "UK-led client contact with production in Kochi, India, for senior-grade output at a lower cost.")]
+           ("Clear delivery", "Defined scope, costed deliverables and a structured path from first brief to handover.")]
     why_cards = "".join(f'<article class="card"><h3>{e(t)}</h3><p>{e(x)}</p></article>' for t, x in why)
     live = f'''<article class="card project-card"><div class="pic"><span class="tag-live">Live project</span>{img("filter-block", ALT["filter-block"])}</div>
 <div class="body"><h3>{e(LIVE_PROJECT["title"])}</h3><p class="loc">In delivery</p><ul class="chips">{"".join(f'<li class="chip">{e(c)}</li>' for c in LIVE_PROJECT["chips"])}</ul><p>{e(LIVE_PROJECT["sentence"])}</p></div></article>'''
@@ -396,7 +396,7 @@ def home():
 </div></section>
 {contact_section()}'''
     return page("Arangath | Consulting and digital engineering for water infrastructure",
-                "Design consulting, information management and BIM modelling for water-sector contractors. UK-led, with production in Kochi, India.",
+                "Design consulting, information management and BIM modelling for water-sector contractors.",
                 body, "/", current="Home")
 
 
