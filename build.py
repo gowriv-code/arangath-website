@@ -361,7 +361,7 @@ def home():
     for s in SERVICES:
         cta = f'<div class="card-cta"><a class="link" href="{s["detail"]}">Learn more <span aria-hidden="true">→</span></a></div>' if s.get("detail") else ""  # only where a detail page exists
         svc_cards += f'''<article class="card service-home"><div class="pic">{img(s["home_img"], ALT[s["home_img"]])}</div><div class="body">{icon(s["icon"])}<h3>{e(s["title"])}</h3><p>{e(s["sentence"])}</p>{cta}</div></article>'''
-    why = [("Built on engineering", "Advice grounded in 25 years of water and civil contracting, not a software background."),
+    why = [("Built on engineering", "Advice from engineers with 25 years of water and civil contracting experience behind them."),
            ("Standards-led", "ISO 19650 and the UK BIM Framework, interpreted carefully and applied consistently."),
            ("Clear delivery", "Defined scope, costed deliverables and a structured path from first brief to handover.")]
     why_cards = "".join(f'<article class="card"><h3>{e(t)}</h3><p>{e(x)}</p></article>' for t, x in why)
@@ -491,6 +491,8 @@ def project_page(p):
 
 # ---------------------------------------------------------------- careers (ported from the previous site)
 CAREERS_FIXES = [
+    ("Our delivery operation is based in India (Kochi and Mumbai) and our client-facing operation is anchored in London.", "Our team is based in Kochi, India."),
+    ("Our client-facing operations are anchored in London; our delivery operation is based in Kochi and Mumbai, India — and we are growing it.", "Our team is based in Kochi, India — and we are growing it."),
     ("Common Data Environments (ACC / BIM360 / ProjectWise)", "Common Data Environments"),
     ("Work within a Common Data Environment (ACC / BIM360 / ProjectWise)", "Work within a Common Data Environment"),
     ("Familiarity with Common Data Environments (BIM360 / ACC or ProjectWise).", "Familiarity with Common Data Environments."),
