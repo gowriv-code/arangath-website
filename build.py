@@ -194,7 +194,7 @@ def lockup(cls="", animated=False):
             '<span aria-hidden="true">R<span class="g">A</span>NGATH</span></a>')
 
 
-NAV = [("Services", "/services"), ("Projects", "/#projects"), ("About", "/#why"), ("Careers", "/careers"), ("Blog", "/blog")]
+NAV = [("Home", "/"), ("Services", "/services"), ("Projects", "/#projects"), ("About", "/#why"), ("Careers", "/careers"), ("Blog", "/blog")]
 
 
 def header(current=""):
@@ -332,8 +332,8 @@ def contact_section():
 <p class="lede">Send a few lines on what you are building. We reply within one business day.</p>
 <a class="contact-email" href="mailto:{EMAIL}">{EMAIL}</a>
 <div class="addr-grid">
-<div class="addr"><h3>UK office</h3><address>66 Paul Street<br>London EC2A 4NA<br>United Kingdom</address><span class="role">Client-facing</span></div>
-<div class="addr"><h3>India office</h3><address>Near Petta Bus Stop, Ettumanoor–Ernakulam Road, Petta, Poonithura, Maradu, Kochi, Ernakulam, Kerala 682038, India</address><span class="role">Delivery · <a href="{MAPS}" rel="noopener" target="_blank">Open in Google Maps</a> (X82J+C7W)</span></div>
+<div class="addr"><h3>UK office</h3><address>66 Paul Street<br>London EC2A 4NA<br>United Kingdom</address></div>
+<div class="addr"><h3>India office</h3><address>Near Petta Bus Stop, Ettumanoor–Ernakulam Road, Petta, Poonithura, Maradu, Kochi, Ernakulam, Kerala 682038, India</address><span class="role"><a href="{MAPS}" rel="noopener" target="_blank">Open in Google Maps</a> (X82J+C7W)</span></div>
 </div>
 </div>
 <form class="form" name="contact" method="POST" action="/thank-you/" data-netlify="true" netlify-honeypot="bot-field">
@@ -361,9 +361,9 @@ def home():
     for s in SERVICES:
         cta = f'<div class="card-cta"><a class="link" href="{s["detail"]}">Learn more <span aria-hidden="true">→</span></a></div>' if s.get("detail") else ""  # only where a detail page exists
         svc_cards += f'''<article class="card service-home"><div class="pic">{img(s["home_img"], ALT[s["home_img"]])}</div><div class="body">{icon(s["icon"])}<h3>{e(s["title"])}</h3><p>{e(s["sentence"])}</p>{cta}</div></article>'''
-    why = [("Built on engineering", "Advice grounded in 25 years of water and civil contracting, not a software background."),
+    why = [("Built on engineering", "Advice from engineers with 25 years of water and civil contracting experience behind them."),
            ("Standards-led", "ISO 19650 and the UK BIM Framework, interpreted carefully and applied consistently."),
-           ("Efficient delivery", "UK-led client contact with production in Kochi, India, for senior-grade output at a lower cost.")]
+           ("Clear delivery", "Defined scope, costed deliverables and a structured path from first brief to handover.")]
     why_cards = "".join(f'<article class="card"><h3>{e(t)}</h3><p>{e(x)}</p></article>' for t, x in why)
     live = f'''<article class="card project-card"><div class="pic"><span class="tag-live">Live project</span>{img("filter-block", ALT["filter-block"])}</div>
 <div class="body"><h3>{e(LIVE_PROJECT["title"])}</h3><p class="loc">In delivery</p><ul class="chips">{"".join(f'<li class="chip">{e(c)}</li>' for c in LIVE_PROJECT["chips"])}</ul><p>{e(LIVE_PROJECT["sentence"])}</p></div></article>'''
@@ -373,11 +373,11 @@ def home():
         f'<a class="badge-tile" href="{e(b["url"])}" target="_blank" rel="noopener"><picture><source srcset="{b["src"]}.webp" type="image/webp"><img src="{b["src"]}.png" alt="{e(b["name"])}" loading="lazy" width="160" height="{b.get("h", 100)}"></picture></a>'
         for b in load_badges())
     body = f'''<section class="hero"><div class="wrap hero-grid">
-<div><p class="eyebrow">Consulting and digital engineering for water infrastructure</p>
+<div><p class="eyebrow blue">Consulting and digital engineering for water infrastructure</p>
 <h1>Engineered and modelled right, first time.</h1>
 <p class="lede">We give water-sector contractors the design consulting, information management and BIM modelling to get schemes coordinated before they reach site.</p>
 <div class="btn-row"><a class="btn btn-primary" href="#contact">Tell us about your scheme</a><a class="btn btn-outline" href="#services">See our services</a></div></div>
-<div class="illus-panel">{img("treatment-works", ALT["treatment-works"], loading="eager", w=800, h=560)}</div>
+<div class="illus-panel hero-panel">{img("treatment-works", ALT["treatment-works"], loading="eager", w=800, h=560)}</div>
 </div></section>
 <section class="section alt" id="services"><div class="wrap">
 <div class="section-head"><p class="eyebrow">Services</p><h2>Four ways we help</h2></div>
@@ -396,8 +396,8 @@ def home():
 </div></section>
 {contact_section()}'''
     return page("Arangath | Consulting and digital engineering for water infrastructure",
-                "Design consulting, information management and BIM modelling for water-sector contractors. UK-led, with production in Kochi, India.",
-                body, "/", current="")
+                "Design consulting, information management and BIM modelling for water-sector contractors.",
+                body, "/", current="Home")
 
 
 def services_page():
@@ -412,7 +412,7 @@ def services_page():
         for c in s["cards"]:
             cards += service_card(c, link=s.get("detail"))  # "Learn more" only where a detail page exists
         groups += f'''<section class="svc-group" id="{s["slug"]}">
-<div class="banner{flip}" style="background:{s["color"]}"><div class="panel" style="background:{s["color"]}"><h2>{e(s["title"])}</h2><p>{e(s["banner"])}</p>{btn}</div>{img(s["banner_img"], ALT[s["banner_img"]])}</div>
+<div class="banner{flip}"><div class="panel" style="background:{s["color"]}"><h2>{e(s["title"])}</h2><p>{e(s["banner"])}</p>{btn}</div>{img(s["banner_img"], ALT[s["banner_img"]])}</div>
 <div class="grid grid-3">{cards}</div></section>'''
     body = f'''<section class="page-head">{img("pumping-station", "", "fade", loading="eager").replace('alt=""', 'alt="" aria-hidden="true"')}<div class="wrap">
 {breadcrumb([("Home", "/"), ("Services", None)])}
@@ -491,6 +491,8 @@ def project_page(p):
 
 # ---------------------------------------------------------------- careers (ported from the previous site)
 CAREERS_FIXES = [
+    ("Our delivery operation is based in India (Kochi and Mumbai) and our client-facing operation is anchored in London.", "Our team is based in Kochi, India."),
+    ("Our client-facing operations are anchored in London; our delivery operation is based in Kochi and Mumbai, India — and we are growing it.", "Our team is based in Kochi, India — and we are growing it."),
     ("Common Data Environments (ACC / BIM360 / ProjectWise)", "Common Data Environments"),
     ("Work within a Common Data Environment (ACC / BIM360 / ProjectWise)", "Work within a Common Data Environment"),
     ("Familiarity with Common Data Environments (BIM360 / ACC or ProjectWise).", "Familiarity with Common Data Environments."),

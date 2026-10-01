@@ -71,8 +71,11 @@ class S:
         s.poly([(x + w, y, z), (x + w, y + d, z), (x + w, y + d, z + h), (x + w, y, z + h)], r, sw=sw)
         s.poly([(x, y, z + h), (x + w, y, z + h), (x + w, y + d, z + h), (x, y + d, z + h)], t, sw=sw)
 
-    def ground(s, x0, y0, x1, y1, step=4):
-        s.poly([(x0, y0, 0), (x1, y0, 0), (x1, y1, 0), (x0, y1, 0)], GROUND, stroke=GRID, sw=0.1)
+    def ground(s, x0, y0, x1, y1, step=4, fill=None, edge=None, slab=0):
+        if slab:  # visible thickness, so the site reads as a model base rather than a flat floor
+            s.poly([(x0, y1, -slab), (x1, y1, -slab), (x1, y1, 0), (x0, y1, 0)], "#16202B", stroke=OUT, sw=0.08)
+            s.poly([(x1, y0, -slab), (x1, y1, -slab), (x1, y1, 0), (x1, y0, 0)], "#1D2A38", stroke=OUT, sw=0.08)
+        s.poly([(x0, y0, 0), (x1, y0, 0), (x1, y1, 0), (x0, y1, 0)], fill or GROUND, stroke=edge or GRID, sw=0.1)
         x = x0 + step
         while x < x1:
             s.line([(x, y0, 0), (x, y1, 0)], GRID, 0.08)
@@ -181,19 +184,40 @@ class S:
             # door
             s.poly([(x + w * 0.15, y + d, z), (x + w * 0.15 + 1.6, y + d, z), (x + w * 0.15 + 1.6, y + d, z + 2.4), (x + w * 0.15, y + d, z + 2.4)], "#3B4A5C", sw=0.04)
 
-    def clash(s, x, y, z, label=None, sub=None, scale=1.0):
+    def tree(s, x, y, h=3.0, tone=0):
+        a, b = (("#2F5D4A", "#3F7A61"), ("#2A5442", "#37705A"), ("#34664F", "#478A6C"))[tone % 3]
+        s.line([(x, y, 0), (x, y, h * 0.45)], "#6B5A48", 0.25)
+        s.ell(x, y, h * 0.42, h * 0.32, a, stroke=OUT, sw=0.05)
+        s.ell(x, y, h * 0.62, h * 0.26, b, stroke=OUT, sw=0.05)
+        s.ell(x, y, h * 0.82, h * 0.15, b, stroke=OUT, sw=0.05)
+
+    def clash(s, x, y, z, label=None, sub=None, scale=1.0, status="Resolved"):
         (px, py) = P(x, y, z)
         r = 1.1 * scale
-        s.el.append(f'<circle cx="{px:.2f}" cy="{py:.2f}" r="{r*1.9:.2f}" fill="{AMBER}" opacity="0.22"></circle><circle cx="{px:.2f}" cy="{py:.2f}" r="{r:.2f}" fill="none" stroke="{AMBER}" stroke-width="{0.3*scale:.2f}"></circle><circle cx="{px:.2f}" cy="{py:.2f}" r="{r*0.35:.2f}" fill="{AMBER}"></circle>')
+        s._track([(px - r * 2.4, py - r * 2.4), (px + r * 2.4, py + r * 2.4)])
+        # soft halo that pulses (SMIL, so it also runs when the SVG is used as an <img>)
+        s.el.append(f'<circle cx="{px:.2f}" cy="{py:.2f}" r="{r*1.9:.2f}" fill="{AMBER}" opacity="0.22"><animate attributeName="r" values="{r*1.6:.2f};{r*2.5:.2f};{r*1.6:.2f}" dur="2.6s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.3;0.06;0.3" dur="2.6s" repeatCount="indefinite"/></circle>')
+        s.el.append(f'<circle cx="{px:.2f}" cy="{py:.2f}" r="{r:.2f}" fill="none" stroke="{AMBER}" stroke-width="{0.3*scale:.2f}"></circle><circle cx="{px:.2f}" cy="{py:.2f}" r="{r*0.35:.2f}" fill="{AMBER}"></circle>')
         if label and LABELS:
-            bx, by = px + 3 * scale, py + 2.5 * scale
-            bw, bh = 21 * scale, 6.2 * scale
-            s._track([(bx + bw, by + bh)])
-            s.el.append(f'<line x1="{px+r:.2f}" y1="{py+r*0.5:.2f}" x2="{bx:.2f}" y2="{by+1.5*scale:.2f}" stroke="{AMBER}" stroke-width="{0.12*scale:.2f}"></line>')
-            s.el.append(f'<rect x="{bx:.2f}" y="{by:.2f}" width="{bw:.2f}" height="{bh:.2f}" rx="{1*scale:.2f}" fill="#0D1319" stroke="{AMBER}" stroke-width="{0.15*scale:.2f}"></rect>')
-            s.el.append(f'<text x="{bx+1.4*scale:.2f}" y="{by+2.6*scale:.2f}" font-family="DM Sans, sans-serif" font-weight="700" font-size="{1.9*scale:.2f}" fill="{AMBER}">{label}</text>')
+            k = scale
+            bw, bh = 31 * k, 8.6 * k
+            bx, by = px + 4.5 * k, py + 5.2 * k
+            s._track([(bx + bw + 1, by + bh + 1)])
+            gid = f"{s.pfx}sh"
+            s.el.append(f'<defs><filter id="{gid}" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="{0.5*k:.2f}" stdDeviation="{0.7*k:.2f}" flood-color="#000" flood-opacity="0.55"/></filter></defs>')
+            # leader: elbow from the ring to the card
+            s.el.append(f'<polyline points="{px+r*0.8:.2f},{py+r*0.6:.2f} {px+2.4*k:.2f},{py+2.6*k:.2f} {bx:.2f},{by+bh*0.5:.2f}" fill="none" stroke="{AMBER}" stroke-width="{0.14*k:.2f}" stroke-linecap="round" stroke-linejoin="round"></polyline>')
+            s.el.append(f'<rect x="{bx:.2f}" y="{by:.2f}" width="{bw:.2f}" height="{bh:.2f}" rx="{1.7*k:.2f}" fill="#111B26" stroke="{AMBER}" stroke-width="{0.16*k:.2f}" filter="url(#{gid})"></rect>')
+            # amber tick badge
+            cx, cy = bx + 3.3 * k, by + bh * 0.5
+            s.el.append(f'<circle cx="{cx:.2f}" cy="{cy:.2f}" r="{1.9*k:.2f}" fill="{AMBER}"></circle><polyline points="{cx-0.9*k:.2f},{cy+0.05*k:.2f} {cx-0.2*k:.2f},{cy+0.8*k:.2f} {cx+1.0*k:.2f},{cy-0.8*k:.2f}" fill="none" stroke="#0D1319" stroke-width="{0.38*k:.2f}" stroke-linecap="round" stroke-linejoin="round"></polyline>')
+            tx = bx + 6.6 * k
+            s.el.append(f'<text x="{tx:.2f}" y="{by+3.5*k:.2f}" font-family="DM Sans, sans-serif" font-weight="700" font-size="{2.3*k:.2f}" fill="#EEF4F1">{label}</text>')
             if sub:
-                s.el.append(f'<text x="{bx+1.4*scale:.2f}" y="{by+4.9*scale:.2f}" font-family="DM Sans, sans-serif" font-size="{1.6*scale:.2f}" fill="#A7B4C2">{sub}</text>')
+                s.el.append(f'<text x="{tx:.2f}" y="{by+6.3*k:.2f}" font-family="DM Sans, sans-serif" font-size="{1.75*k:.2f}" fill="#B5C2CF">{sub}</text>')
+            if status:
+                pw = 8.4 * k
+                s.el.append(f'<rect x="{bx+bw-pw-1.3*k:.2f}" y="{by+1.35*k:.2f}" width="{pw:.2f}" height="{2.6*k:.2f}" rx="{1.3*k:.2f}" fill="#34C17F"></rect><text x="{bx+bw-pw/2-1.3*k:.2f}" y="{by+3.2*k:.2f}" text-anchor="middle" font-family="DM Sans, sans-serif" font-weight="700" font-size="{1.45*k:.2f}" fill="#06211A">{status.upper()}</text>')
 
     def label(s, x, y, z, txt, color="#A7B4C2", size=1.8, anchor="start", weight=400):
         (px, py) = P(x, y, z)
@@ -229,7 +253,16 @@ def filter_block(s, x, y, cells=4):
 
 def hero():
     s = S()
-    s.ground(-4, -4, 66, 44, step=4)
+    s.ground(-8, -8, 78, 52, step=4, fill="#223247", edge="#3F5A78", slab=1.6)
+    # lawns and a perimeter road, so the ground has some life
+    s.poly([(-8, -8, 0.01), (78, -8, 0.01), (78, -2, 0.01), (-8, -2, 0.01)], "#1F3A33", stroke="none")
+    s.poly([(62, -2, 0.01), (78, -2, 0.01), (78, 52, 0.01), (62, 52, 0.01)], "#1F3A33", stroke="none")
+    s.poly([(-8, 44, 0.02), (78, 44, 0.02), (78, 49, 0.02), (-8, 49, 0.02)], "#2B3949", stroke="none")
+    s.line([(-8, 46.5, 0.03), (78, 46.5, 0.03)], "#8997A7", 0.14, dash="1.6 1.4", cap="butt")
+    for k, tx in enumerate(range(-4, 76, 7)):
+        s.tree(tx, -5, 3.4 + (k % 3) * 0.5, tone=k)
+    for k, ty in enumerate(range(4, 46, 8)):
+        s.tree(70, ty, 3.2 + (k % 2) * 0.6, tone=k + 1)
     # raw water inlet
     s.pipe([(-4, 22, 1.2), (4, 22, 1.2)], P_RAW, w=0.8, valves=[(1, 22, 1.2)])
     s.clarifier(15, 22, 11, 4.5)
@@ -238,11 +271,18 @@ def hero():
     # outlet to filters
     s.pipe([(26, 20, 3.0), (32, 20, 3.0), (32, 14, 3.0), (34, 14, 3.0)], P_RAW, w=0.7, valves=[(29, 20, 3.0)])
     filter_block(s, 34, 2, cells=4)
+    # clear water tank and treated-water line
+    s.pipe([(56, 8, 2.4), (62, 8, 2.4)], P_RAW, w=0.6)
+    s.cyl(65, 8, 0, 3.6, 5.0)
+    s.ell(65, 8, 5.0, 2.9, WAT)
     # chemical house
     s.building(40, 28, 0, 13, 9, 5.5)
     s.pipe([(40, 32, 1.0), (30, 32, 1.0), (30, 22, 3.2)], P_DOSE, w=0.3)
     s.pipe([(46, 28, 3.0), (46, 21, 3.0)], P_AIR, w=0.45)
-    s.clash(46, 23.2, 3.0, "Clash 014 · resolved", "Air main vs gallery wall", scale=1.0)
+    # small control building and site fence along the road
+    s.building(2, 34, 0, 7, 6, 3.6)
+    s.line([(-7, 42, 0), (77, 42, 0)], "#6F8196", 0.12, dash="0.4 1.2", cap="butt")
+    s.clash(46, 23.2, 3.0, "Clash 014", "Air main vs gallery wall", scale=1.25)
     return s
 
 
